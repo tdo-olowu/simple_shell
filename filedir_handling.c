@@ -7,14 +7,6 @@
  */
 path_list *build_path_chain(char **dirs)
 {
-	/* if dirs is NULL, return NULL.
-	 * else if dirs[0] is NULL, return NULL.
-	 * else create the head and set it to dirs[0].
-	 * set prev_node to head.
-	 * from there, while dirs[i] != NULL,
-	 * create a new node. if successful, point prev to new_node.
-	 * and point new to NULL. then set prev to new.
-	 */
 	int i;
 	path_list *head;
 	path_list *node;

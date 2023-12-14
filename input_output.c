@@ -25,14 +25,17 @@ char *genv(char *name)
 {
 	extern char **environ;
 	int i;
-	char *n; char *v;
+	char *n, *v, *temp;
 
 	for (i = 0 ; environ[i] != NULL ; ++i)
 	{
-		n = strtok(environ[i], "=");
+		temp = malloc(sizeof(environ[i]));
+		if (temp == NULL)
+			continue;
+		n = strtok(temp, "=");
 		if (strcmp(name, n) == 0)
 		{
-			v = strtok(environ[i], "=");
+			v = strtok(temp, "=");
 			return (v);
 		}
 	}

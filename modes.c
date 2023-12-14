@@ -11,11 +11,11 @@ void interactive_mode(void)
 	char *ps = "($)";
 	char *response = NULL;
 	char **argv = NULL;
+	extern char **environ;
 
 	size_t rlen = 0;
 	int repl = 1;
 	ssize_t bytes_read;
-	extern char **environ;
 
 	do {
 		printf("%s ", ps);

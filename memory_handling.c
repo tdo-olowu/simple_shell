@@ -33,7 +33,6 @@ void free_links(path_list *head)
 	while (current_node != NULL)
 	{
 		next_node = current_node->next;
-		free(current_node->dir);
 		free(current_node);
 		current_node = next_node;
 	}
@@ -45,7 +44,10 @@ void free_links(path_list *head)
  */
 void cleanup(char *buffer, char **tokens, path_list *path_h)
 {
-	free(buffer);
-	free_table(tokens);
-	free_links(path_h);
+	if (buffer != NULL)
+		free(buffer);
+	if (tokens != NULL)
+		free_table(tokens);
+	if (path_h != NULL)
+		free_links(path_h);
 }

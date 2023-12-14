@@ -11,7 +11,7 @@ int evaluate(char **argv, char **envp)
 	int exe;
 	char *cmd = argv[0];
 	char *pathvs;
-	int (*func)(void*) = search_bins(cmd);
+	int (*func)(void *) = search_bins(cmd);
 	path_list *dirs;
 
 	if (func == NULL)
@@ -37,7 +37,7 @@ int evaluate(char **argv, char **envp)
 		}
 	}
 
-	return (func(NULL));	
+	return (func(NULL));
 }
 
 
@@ -68,7 +68,7 @@ int attempt(char **argv, char **envp)
  * @cmd: the key to decide which function to return.
  * Return: pointer to a function.
  */
-int (*search_bins(char* cmd))(void*)
+int (*search_bins(char *cmd))(void*)
 {
 	int i;
 	bin_t builtins[] = {{"exit", leave},
