@@ -11,7 +11,7 @@ int evaluate(char **argv, char **envp)
 	int exe;
 	char *cmd = argv[0];
 	char *pathvs;
-	int (*func)(void*) = search_bins(cmd);
+	int (*func(char*))(void*) = search_bins;
 	path_list *dirs;
 
 	if (func == NULL)

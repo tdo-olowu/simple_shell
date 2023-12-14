@@ -15,7 +15,6 @@ void file_mode(int, char**, char**);
 
 
 /* important variables */
-char *PROMPT = "($) ";
 typedef struct node path_list;
 typedef struct bins bin_t;
 struct node {
@@ -29,7 +28,6 @@ struct bins {
 
 
 /* input acquisition */
-void prompt(char*);
 ssize_t getcmd(char**, size_t*, FILE*);
 char *genv(char*);
 
@@ -46,7 +44,7 @@ int _env(void*);
 /* input parsing */
 char **tokenify(char*, char*);
 char *pathify(char*, char*);
-path_list *path_chain(char *paths);
+path_list *build_path_chain(char **paths);
 char *joinstr(char*, char*);
 
 /* memory management */
@@ -54,7 +52,6 @@ void free_table(char**);
 void free_links(path_list*);
 void cleanup(char*, char**, path_list*);
 
-/* builtins */
 /* file and directory navigation */
 
 
