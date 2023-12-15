@@ -9,7 +9,6 @@
  */
 int exec_bin(char **argv, char **envp)
 {
-	(void)envp; /* not useful right now */
 	size_t i;
 	int status = -1; /* assume it does not exist */
 	int (*function)(void); /* ptr to funct that takes void* and give int */
@@ -19,12 +18,13 @@ int exec_bin(char **argv, char **envp)
 			      {"env", penv},
 			      {NULL, NULL}};
 
+	(void)envp;
 	for (i = 0 ; i < sizeof(bin_map) ; ++i)
 	{
 		bin_name = (bin_map[i]).name;
 		if (bin_name == NULL)
 			return (-1); /* depends on order of NULL */
-		function = &(bin_map[i]).func;
+		function = (bin_map[i]).func;
 		if (strcmp(arg, bin_name) == 0)
 		{
 			status = function(); /* should get an integer */
