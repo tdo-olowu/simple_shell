@@ -59,7 +59,7 @@ dir_type *build_dir_chain(char**);
 
 /* process_handling */
 int evaluate(char**, char**);
-int dummy_process(char**, char**);
+int dummy_process(char*, char**, char**);
 
 /* builtins */
 int (*exec_bin(char**, char**))(void);

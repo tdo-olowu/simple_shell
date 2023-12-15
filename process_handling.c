@@ -23,7 +23,7 @@ int evaluate(char **argv, char **envp)
 	 * return -1 if cmd is exit. return 1 otherwise.
 	 */
 		/* prep argv[0] and try every path */
-		status = dummy_process(argv, envp);
+		status = dummy_process(cmd, argv, envp);
 	}
 	else
 		status = exe();
@@ -34,11 +34,12 @@ int evaluate(char **argv, char **envp)
 
 /**
  * dummy_process - something to lock the child away
+ * @cmd: the command as a path
  * @argv: command, and its arguments.
  * @envp: environment variables
  * Return: always returns 1 for now.
  */
-int dummy_process(char **argv, char **envp)
+int dummy_process(char *cmd, char **argv, char **envp)
 {
 	int exe;
 	pid_t cid;
@@ -51,7 +52,7 @@ int dummy_process(char **argv, char **envp)
 	}
 	else if (cid == 0)
 	{
-		exe = execve(argv[0], argv, envp);
+		exe = execve(cmd, argv, envp);
 		if (exe < 0)
 		{
 			perror("Couldn't execute command");
