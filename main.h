@@ -10,6 +10,7 @@
 
 /* type and struct definitions */
 typedef struct node dir_type;
+typedef struct bins bin_type;
 
 /**
  * struct node - simply linked list
@@ -21,6 +22,21 @@ typedef struct node dir_type;
 struct node {
 	char *dir;
 	dir_type *next;
+};
+
+/**
+ * struct bins - builtin name and associated function.
+ * @name: name of the function as read by hsh
+ * @func: the actual function as named in source code.
+ *
+ * Description: associates names with processes.
+ * might include type later, possibly.
+ * depends on if I don't die of overwork.
+ * only exec_bin will be affected.
+ */
+struct bins {
+	char *name;
+	int (*func)(void);
 };
 
 
@@ -48,7 +64,7 @@ int dummy_process(char**, char**);
 /* builtins */
 int exec_bin(char**, char**);
 int hsh_exit(void);
-void penv(char**);
+void penv(void);
 
 /* memory management */
 void free_table(char**);
