@@ -2,7 +2,8 @@
 
 
 /**
- * interactive_mode
+ * interactive_mode - REPL
+ * Return: nothing, but will exit SUCCESS once done.
  */
 void interactive_mode(void)
 {
@@ -34,7 +35,7 @@ void interactive_mode(void)
 			cmd_as_dirs(argv);
 			printf("*****ARGV[0] FROM MAIN AFTER:%s\n", argv[0]); /* DEBUG */
 			eval = evaluate(argv, envp);
-			printf("EVAL EVALUATED AS: %d. ABOUT TO CLEANUP...\n", eval);
+			printf("EVAL EVALUATED AS: %d. ABOUT TO CLEANUP...\n", eval); /* DEBUG */
 			free_table(argv);
 		}
 		free(cmdline);
@@ -45,7 +46,8 @@ void interactive_mode(void)
 
 
 /**
- * file_mode
+ * file_mode - reads input from a file or is passed input
+ * Return: nothing, but may exit success of failure.
  */
 void file_mode(void)
 {

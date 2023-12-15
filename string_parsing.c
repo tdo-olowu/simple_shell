@@ -3,14 +3,18 @@
 
 /**
  * make_tokens - tokenise a null-terminated string.
+ * @str: the string to tokenise
+ * @delim: the delimiter.
+ * Return: array of strings i.e. the tokens.
  */
 char **make_tokens(char *str, char *delim)
 {
 	int i;
-	int buf = 64, bufsize = 64;
+	int buf = 64;
+       	int bufsize = 64;
 	char *temp, **tokens;
 
-	tokens = malloc(buf * sizeof(char**)); /* guess the expect size of input */
+	tokens = malloc(buf * sizeof(char**));
 	if (tokens == NULL)
 		return (NULL);
 
@@ -41,6 +45,9 @@ char **make_tokens(char *str, char *delim)
 
 /**
  * envcopy - summons and copies over the ENV variable somehow.
+ * the issue is that I'm not allowed to use extern
+ * then how tf am I supposed to access environ?!
+ * Return: a copy of environ.
  */
 char **envcopy(void)
 {
@@ -69,10 +76,13 @@ char **envcopy(void)
 }
 
 
+
 /**
  * cmd_as_dirs - process argv's first cmd so that executor can use it properly.
  * later, we'll add another argument - a list of paths to try?
  * this function is a primitive version of try-paths.
+ * @argv: the list of commands.
+ * Return: none
  */
 void cmd_as_dirs(char **argv)
 {

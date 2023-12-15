@@ -2,15 +2,23 @@
 
 
 /**
- * evaluate - return 1 for success, -1 for failure.
+ * evaluate - execute a list of commands.
  * assumes that argv is in proper form.
+ * @argv: a command followed by its arguments.
+ * @envp: environment variables.
+ * Return: returns -1 if command is exit, returns 1 else.
  */
 int evaluate(char **argv, char **envp)
 {
 	int exe;
 	pid_t cid;
 
-	/* check if cmd exists before forking over */
+	/* 
+	 * check if cmd  file exists before forking over
+	 * pls wrap this fork n stuff inside a dummy process.
+	 * let evaluate deal with the fork business and return either 1 or -1
+	 * return -1 if cmd is exit. return 1 otherwise.
+	 */
 	cid = fork();
 	if (cid == -1)
 	{
@@ -29,9 +37,9 @@ int evaluate(char **argv, char **envp)
 			exit(EXIT_FAILURE);
 		}
 	}
-	printf("	parent about to wait...\n");
+	printf("	parent about to wait...\n"); /* DEBUG */
 	wait(NULL);
-	printf("evaluate function returning 1...\n");
+	printf("evaluate function returning 1...\n"); /* DEBUG */
 
 	return (1);
 
@@ -52,6 +60,9 @@ int evaluate(char **argv, char **envp)
 
 /**
  * dummy_process - something to lock the child away
+ * @argv: command, and its arguments.
+ * @envp: environment variables
+ * Return: always returns 1 for now.
  */
 int dummy_process(char **argv, char **envp)
 {

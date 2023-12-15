@@ -3,6 +3,8 @@
 
 /**
  * main - the shell hell
+ * code makes it look so simple...
+ * Return: 0 for success.
  */
 int main(void)
 {
