@@ -28,22 +28,24 @@ char **make_tokens(char *str, char *delim)
 			if (tokens == NULL)
 			{
 				perror("make_tokens: couldn't parse all input");
-				free_table(tokens); /* why shouldn't we return partial output? */
+				/* why can't we return partial tokens */
+				free_table(tokens);
 				return (NULL);
 			}
 		}
-		tokens[i] = strdup(temp); /* probably this line */
+		/* this line may cause memory leaks */
+		tokens[i] = strdup(temp);
 		if (tokens[i] == NULL)
 		{
 			perror("couldn't parse all input.");
 			free_table(tokens);
 			return (NULL);
 		}
-		printf("token read: %s\n", tokens[i]); /* DEBUG LINE */
+		/* printf("token read: %s\n", tokens[i]); DEBUG LINE */
 		temp = strtok(NULL, delim);
 	}
 	tokens[i] = NULL;
-	printf("..............TOKENS COMPLETE!...............\n"); /* DEBUG LINE */
+	/* printf("..............TOKENS COMPLETE!...............\n"); DEBUG LINE */
 
 	return (tokens);
 }

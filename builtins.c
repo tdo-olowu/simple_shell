@@ -40,6 +40,7 @@ int (*exec_bin(char **argv, char **envp))(void)
  */
 int hsh_exit(void)
 {
+	printf("Currently in hsh_exit.\n");
 	return (-1);
 }
 
