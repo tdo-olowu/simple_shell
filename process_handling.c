@@ -37,7 +37,7 @@ int evaluate(char **argv, char **envp)
 		dir_node = build_dir_chain(paths);
 		if (dir_node == NULL)
 		{
-			perror("dirnode no exist no mo");
+			perror("dirnode is NULL");
 			return (panic(msg, pvalue, paths, 1));
 		}
 
@@ -45,6 +45,7 @@ int evaluate(char **argv, char **envp)
 		dir_head = dir_node;
 		while (dir_node != NULL)
 		{
+			printf("dir_node is NOT NULL\n");
 			path = cmd_as_dir(cmd, dir_node->dir);
 			if (path == NULL)
 				return (panic(msg, pvalue, paths, 1));
