@@ -1,0 +1,31 @@
+I think the issue is that I'm getting two processes returned to eval.
+
+Alright now I see another problem.
+The damn newline character! After typing the cmd line, there's a newline at the end of the input.
+Please get rid of that or the basic commands will never be found.
+At the same time, I'm not sure how to make this damn thing fail safely.
+
+So, I've fixed that. The only issue now is dealing with this annoying double free problem,
+and the whole parent-child execution part. That has to go smoothly.
+
+I think we should cleanup only when about to leave. In other cases, just keep overwriting the existing memory with each loop.
+Now, I have to handle PATH, exit, env, etc.
+
+PATH HANDLING
+How should I handle the PATH?
+First, getenv(PATH);
+Their suggested solution is to convert the PATHS into a linked list, then try each and every directory until the command is found.
+Might have to save the command in a separate variable.
+
+
+HANDLING BUILTINS
+There
+
+
+EXECUTING PROCESSES SAFELY
+
+
+CONTROLLING THE MAINLOOP
+
+
+FILE MODE
