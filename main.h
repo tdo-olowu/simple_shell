@@ -62,7 +62,7 @@ int evaluate(char**, char**);
 int dummy_process(char**, char**);
 
 /* builtins */
-int exec_bin(char**, char**);
+int (*exec_bin(char**, char**))(void);
 int hsh_exit(void);
 int penv(void);
 

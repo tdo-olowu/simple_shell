@@ -7,32 +7,27 @@
  * @envp: environment variables just in case.
  * Return: 1 for success, -1 for failure.
  */
-int exec_bin(char **argv, char **envp)
+int (*exec_bin(char **argv, char **envp))(void)
 {
 	size_t i;
-	int status = -1; /* assume it does not exist */
-	int (*function)(void); /* ptr to funct that takes void* and give int */
-	char *arg = argv[0];
+	int (*function)(void);
 	char *bin_name;
 	bin_type bin_map[] = {{"exit", hsh_exit},
-			      {"env", penv},
-			      {NULL, NULL}};
+			      {"env", penv}}
 
+	/* envp isn't useful for now */
 	(void)envp;
 	for (i = 0 ; i < sizeof(bin_map) ; ++i)
 	{
 		bin_name = (bin_map[i]).name;
-		if (bin_name == NULL)
-			return (-1); /* depends on order of NULL */
 		function = (bin_map[i]).func;
-		if (strcmp(arg, bin_name) == 0)
+		if (strcmp(argv[0], bin_name) == 0)
 		{
-			status = function(); /* should get an integer */
-			return (status);
+			return (function);
 		}
 	}
 
-	return (status);
+	return (NULL);
 }
 
 

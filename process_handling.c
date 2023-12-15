@@ -10,23 +10,25 @@
  */
 int evaluate(char **argv, char **envp)
 {
-	int exe;
+	int status;
+	int (*exe)(void);
 
 	exe = exec_bin(argv, envp);
-	if (exe < 0)
+	if (exe == NULL)
 	{
-		/* prep argv[0] and try every path */
-		exe = dummy_process(argv, envp);
-	}
-
 	/* 
 	 * check if cmd  file exists before forking over
 	 * pls wrap this fork n stuff inside a dummy process.
 	 * let evaluate deal with the fork business and return either 1 or -1
 	 * return -1 if cmd is exit. return 1 otherwise.
 	 */
+		/* prep argv[0] and try every path */
+		status = dummy_process(argv, envp);
+	}
+	else
+		status = exe();
 
-	return (exe);
+	return (status);
 }
 
 
