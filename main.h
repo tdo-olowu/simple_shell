@@ -11,15 +11,15 @@
 /* type and struct definitions */
 typedef struct node dir_type;
 
-typedef struct node {
+struct node {
 	char *dir;
 	dir_type *next;
-} dir_type;
+};
 
 
 /* modes */
 void interactive_mode(void);
-void file_mode(void);
+void file_mode(int, char**, char**);
 
 /* input-output */
 ssize_t getcmd(char**, size_t*, FILE*);
@@ -31,7 +31,9 @@ void cmd_as_dirs(char**);
 
 /* path handling */
 dir_type *append_dir_node(dir_type**, char*);
-dir_type *build_dir_chain(dir_type**);
+dir_type *append_node(dir_type**, char*);
+dir_type *build_dir_chain(char**);
+
 
 /* process_handling */
 int evaluate(char**, char**);

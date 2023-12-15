@@ -53,6 +53,9 @@ void interactive_mode(void)
  */
 void file_mode(int ac, char **av, char **env)
 {
+	(void)ac;
+	(void)av;
+	(void)env;
 	exit(EXIT_FAILURE);
 }
 

@@ -3,6 +3,7 @@
 
 /**
  * append_dir_node - appends a node to head of dir_type
+ * is this even useful anymore?
  * @head: address of head
  * Return: pointer to appended node
  */
@@ -87,7 +88,7 @@ dir_type *build_dir_chain(char **paths)
 		if (new_tail == NULL)
 		{
 			free_list(init_tail);
-			return (NULL)
+			return (NULL);
 		}
 	}
 
