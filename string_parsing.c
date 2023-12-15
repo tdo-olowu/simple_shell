@@ -113,32 +113,45 @@ char *genv(char *name, char **env)
 
 
 /**
- * cmd_as_dirs - process argv's first cmd so that executor can use it properly.
+ * cmd_as_dir - process argv's first cmd so that executor can use it properly.
  * later, we'll add another argument - a list of paths to try?
  * this function is a primitive version of try-paths.
- * @argv: the list of commands.
+ * @str: the address of the string to be processed.
+ * @pref: what to append to the str e.g. /bin/
  * Return: none
  */
-void cmd_as_dirs(char **argv)
+void cmd_as_dir(char **str, char *prefix)
 {
-	char *dir_pre = "/bin/";
-	int len1 = strlen(dir_pre);
-	int len2 = strlen(argv[0]);
+	char *old_cmd = *str;
+	char *dir_pre, new_str;
+	int len1, len2;
 	int k;
-	char *new_str = malloc((1 + len1 + len2) * sizeof(char));
 
-	if (new_str != NULL)
+	if (prefix != NULL)
 	{
-		for (k = 0 ; k < len1 ; ++k)
-			new_str[k] = dir_pre[k];
-		for (k = 0 ; k < len2 ; ++k)
-			new_str[k + len1] = argv[0][k];
-		new_str[k + len1] = '\0';
-		argv[0] = strdup(new_str);
-		if (argv[0] == NULL) /* could not duplicate */
+		dir_pre = prefix;
+		len1 = strlen(dir_pre);
+		len2 = strlen(old_cmd);
+		/* 2 cuz of that pesky / not included in PATh */
+		new_str = malloc((2 + len1 + len2) * sizeof(char));
+
+		if (new_str != NULL)
 		{
-			/* this approach of duplicating isn't sust */
-			perror("Could not prepend directory name.");
+			for (k = 0 ; k < len1 ; ++k)
+				new_str[k] = dir_pre[k];
+			new_str[k] = '/';
+			for (k = 0 ; k < len2 ; ++k)
+				new_str[k + 1 + len1] = old_cmd[k];
+			new_str[k + 1 + len1] = '\0';
+			printf("new str - %s\n", new_str); /* DEBUG */
+
+			old_cmd = strdup(new_str);
+			/* what if duplication fails? */
+			if (old_cmd == NULL) 
+			{
+				/* make sure caller temporarily stores original */
+				perror("Could not prepend directory name.");
+			}
 		}
 	}
 }

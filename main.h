@@ -50,7 +50,7 @@ ssize_t getcmd(char**, size_t*, FILE*);
 /* text parsing and processing */
 char **make_tokens(char*, char*);
 char **envcopy(void);
-void cmd_as_dirs(char**);
+void cmd_as_dir(char**, char*);
 
 /* path handling */
 dir_type *append_dir_node(dir_type**, char*);

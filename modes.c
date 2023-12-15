@@ -33,7 +33,6 @@ void interactive_mode(void)
 			/* argv is freed only when it is allocated */
 			argv = make_tokens(cmdline, " ");
 			/* printf("*****ARGV[0] FROM MAIN BEFORE:%s\n", argv[0]); DEBUG */
-			cmd_as_dirs(argv);
 			/* printf("*****ARGV[0] FROM MAIN AFTER:%s\n", argv[0]); */
 			eval = evaluate(argv, envp);
 			/*printf("EVAL EVALUATED AS: %d. ABOUT TO CLEANUP...\n", eval); DEBUG */
