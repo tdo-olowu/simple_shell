@@ -32,7 +32,13 @@ char **make_tokens(char *str, char *delim)
 				return (NULL);
 			}
 		}
-		tokens[i] = strdup(temp);
+		tokens[i] = strdup(temp); /* probably this line */
+		if (tokens[i] == NULL)
+		{
+			perror("couldn't parse all input.");
+			free_table(tokens);
+			return (NULL);
+		}
 		printf("token read: %s\n", tokens[i]); /* DEBUG LINE */
 		temp = strtok(NULL, delim);
 	}
@@ -53,7 +59,7 @@ char **envcopy(void)
 {
 	extern char **environ;
 	int i = 0;
-	int buf = 64, bufsize = 64;
+	int buf = 64;
 	char **envp;
 
 	envp = malloc(buf * sizeof(char**));
@@ -100,5 +106,10 @@ void cmd_as_dirs(char **argv)
 			new_str[k + len1] = argv[0][k];
 		new_str[k + len1] = '\0';
 		argv[0] = strdup(new_str);
+		if (argv[0] == NULL) /* could not duplicate */
+		{
+			/* this approach of duplicating isn't sust */
+			perror("Could not prepend directory name.");
+		}
 	}
 }

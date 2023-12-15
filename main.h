@@ -8,6 +8,14 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+/* type and struct definitions */
+typedef struct node dir_type;
+
+typedef struct node {
+	char *dir;
+	dir_type *next;
+} dir_type;
+
 
 /* modes */
 void interactive_mode(void);

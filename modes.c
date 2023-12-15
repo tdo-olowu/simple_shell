@@ -30,17 +30,19 @@ void interactive_mode(void)
 		/* useful? else if (bytes_read == 0); */
 		else
 		{
+			/* argv is freed only when it is allocated */
 			argv = make_tokens(cmdline, " ");
 			printf("*****ARGV[0] FROM MAIN BEFORE:%s\n", argv[0]); /* DEBUG */
 			cmd_as_dirs(argv);
 			printf("*****ARGV[0] FROM MAIN AFTER:%s\n", argv[0]); /* DEBUG */
 			eval = evaluate(argv, envp);
 			printf("EVAL EVALUATED AS: %d. ABOUT TO CLEANUP...\n", eval); /* DEBUG */
-			free_table(argv);
+			free_table(argv); /* the issue is prolly here*/
 		}
-		free(cmdline);
+		/* /free(cmdline);*/
 		putchar('\n'); /* DEBUG */
 	} while (eval == 1);
+	free(cmdline);
 }
 
 
@@ -49,7 +51,7 @@ void interactive_mode(void)
  * file_mode - reads input from a file or is passed input
  * Return: nothing, but may exit success of failure.
  */
-void file_mode(void)
+void file_mode(int ac, char **av, char **env)
 {
 	exit(EXIT_FAILURE);
 }
