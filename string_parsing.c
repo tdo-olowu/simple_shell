@@ -93,21 +93,29 @@ char **envcopy(void)
  * Return: the value of the name
  * pls fix leading whitespace.
  */
-char *genv(char *name, char **env)
+char *genv(char *name)
 {
 	int i;
 	char *n; char *v;
+	char **env = envcopy();
 
 	printf("	inside genv.\n");
-	for (i = 0 ; env[i] != NULL ; ++i)
+
+	if (env != NULL)
 	{
-		n = strtok(env[i], "=");
-		if (strcmp(name, n) == 0)
+		v = NULL;
+		for (i = 0 ; env[i] != NULL ; ++i)
 		{
-			v = strtok(NULL, "=");
-			return (v);
+			n = strtok(env[i], "=");
+			if (strcmp(name, n) == 0)
+			{
+				v = strtok(NULL, "=");
+				break;
+			}
 		}
+		return (v);
 	}
+	printf("	leaving genv\n");
 
 	return (NULL);
 }

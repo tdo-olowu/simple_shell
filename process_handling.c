@@ -21,7 +21,7 @@ int evaluate(char **argv, char **envp)
 	if (exe == NULL)
 	{
 		printf("Not a builtin cmd.\n");
-		pvalue = genv("PATH", envp);
+		pvalue = genv("PATH");
 
 		if (pvalue == NULL)
 			return (panic(msg, NULL, NULL, 1));
