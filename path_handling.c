@@ -44,9 +44,10 @@ dir_type *append_dir_node(dir_type **head, char *path)
  * @str: string associated with tail.
  * Return: pointer to tail of appended node.
  */
-dir_type *append_node(dir_type **old_tail, char *str)
+dir_type *append_node(dir_type **tail, char *str)
 {
 	dir_type *new_tail;
+	dir_type *old_tail = *tail;
 
 	new_tail = malloc(sizeof(dir_type));
 	if (new_tail == NULL)
@@ -60,31 +61,37 @@ dir_type *append_node(dir_type **old_tail, char *str)
 	}
 	new_tail->next = NULL;
 
-	if (*old_tail == NULL)
-		*old_tail = new_tail;
+	if (old_tail == NULL)
+		old_tail = new_tail;
 	else
-		*old_tail->next = new_tail;
+		old_tail->next = new_tail;
 
 	return (new_tail);
 }
 
 
 /**
- * build_dir_chain - builds linked list of paths
- * assumes an array of paths is given.
+ * build_dir_chain - builds linked list of paths from scratch
  * @paths: an array of paths e.g {/bin/, etc.}
  * Return: pointer to head of list.
  */
 dir_type *build_dir_chain(char **paths)
 {
 	int i;
-	dir_type *head = NULL;
-	dir_type *new_node;
+	dir_type *init_tail = NULL;
+	dir_type *new_tail = init_tail;
 
 	for (i = 0 ; paths[i] != NULL ; ++i)
 	{
-		new_node = append_dir_node(head, paths[i]);
+		new_tail = append_node(&new_tail, paths[i]);
+		if (new_tail == NULL)
+		{
+			free_list(init_tail);
+			return (NULL)
+		}
 	}
+
+	return (init_tail);
 }
 
 
