@@ -2,6 +2,21 @@
 
 
 /**
+ * is_a_dir - crudely test if fname is directory name.
+ * @cmd: given command.
+ * Return: 1 means yes, 0 means no.
+ */
+int is_a_dir(char *cmd)
+{
+	if (cmd == NULL)
+		return (0);
+	if (cmd[0] == '/')
+		return (1);
+	return (0);
+}
+
+
+/**
  * append_dir_node - appends a node to head of dir_type
  * is this even useful anymore?
  * @head: address of head
@@ -82,7 +97,9 @@ dir_type *build_dir_chain(char **paths)
 	dir_type *init_tail = NULL;
 	dir_type *new_tail = init_tail;
 
-	printf(".......STARTING CHAIN...........\n");
+	if (paths == NULL)
+		return (NULL);
+
 	for (i = 0 ; paths[i] != NULL ; ++i)
 	{
 		new_tail = append_node(&new_tail, paths[i]);
@@ -93,10 +110,7 @@ dir_type *build_dir_chain(char **paths)
 		}
 		if (i == 0)
 			init_tail = new_tail;
-		printf("	new_tail added: %s", new_tail->dir); /* DEBUG */
-		printf("init_tail still %s\n", init_tail->dir);
 	}
-	printf(".....CHAIN COMPLETE!................\n");
 
 	return (init_tail);
 }

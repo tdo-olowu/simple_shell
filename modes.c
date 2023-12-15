@@ -16,30 +16,25 @@ void interactive_mode(void)
 	do {
 		printf("($) ");
 		bytes_read = getcmd(&cmdline, &cmdlen, stdin);
-		/* check if nothing was read. there's also double free issue */
 		if (bytes_read < 0)
 		{
 			if (feof(stdin))
 			{
-				free(cmdline); /* potential segfault? */
+				free(cmdline);
 				exit(EXIT_SUCCESS);
 			}
 			else
 				perror("Couldn't read input for some reason. Try again.");
 		}
-		/* useful? else if (bytes_read == 0); */
+		else if (bytes_read == 0)
+			eval = 1;
 		else
 		{
-			/* argv is freed only when it is allocated */
 			argv = make_tokens(cmdline, " ");
-			/* printf("*****ARGV[0] FROM MAIN BEFORE:%s\n", argv[0]); DEBUG */
-			/* printf("*****ARGV[0] FROM MAIN AFTER:%s\n", argv[0]); */
 			eval = evaluate(argv, envp);
-			/*printf("EVAL EVALUATED AS: %d. ABOUT TO CLEANUP...\n", eval); DEBUG */
-			free_table(argv); /* the issue is prolly here*/
+			free_table(argv);
 		}
 		/* /free(cmdline);*/
-		putchar('\n'); /* DEBUG */
 	} while (eval == 1);
 	free(cmdline);
 }

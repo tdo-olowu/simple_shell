@@ -19,7 +19,6 @@ int (*exec_bin(char **argv, char **envp))(void)
 	/* envp isn't useful for now */
 	(void)envp;
 	range = sizeof(bin_map) / sizeof(bin_type);
-	printf("arg: %s\n", argv[0]);
 	for (i = 0 ; i < range ; ++i)
 	{
 		bin_name = (bin_map[i]).name;
@@ -40,7 +39,6 @@ int (*exec_bin(char **argv, char **envp))(void)
  */
 int hsh_exit(void)
 {
-	printf("Currently in hsh_exit.\n");
 	return (-1);
 }
 

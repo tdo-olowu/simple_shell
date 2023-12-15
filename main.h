@@ -55,6 +55,7 @@ char *cmd_as_dir(char*, char*);
 char *genv(char*);
 
 /* path handling */
+int is_a_dir(char*);
 dir_type *append_dir_node(dir_type**, char*);
 dir_type *append_node(dir_type**, char*);
 dir_type *build_dir_chain(char**);
@@ -63,6 +64,7 @@ dir_type *build_dir_chain(char**);
 int evaluate(char**, char**);
 int dummy_process(char*, char**, char**);
 int file_exists(char*);
+int try_paths(void);
 
 /* builtins */
 int (*exec_bin(char**, char**))(void);

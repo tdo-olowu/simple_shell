@@ -10,7 +10,6 @@ void free_table(char **table)
 {
 	int i;
 
-	printf("freeing table.\n");
 	if (table != NULL)
 	{
 		for (i = 0 ; table[i] != NULL ; ++i)
@@ -30,7 +29,6 @@ void free_list(dir_type *head)
 	dir_type *current_node = head;
 	dir_type *next_node = NULL;
 
-	printf("freeing list...\n");
 	while (current_node != NULL)
 	{
 		next_node = current_node->next;
@@ -52,7 +50,6 @@ void cleanup(char *line, char **table)
 {
 	if (line != NULL)
 	{
-		printf("About to free line.\n");
 		free(line);
 	}
 	if (table != NULL)

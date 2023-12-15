@@ -11,62 +11,57 @@ int evaluate(char **argv, char **envp)
 {
 	int status = 1;
 	int (*exe)(void);
-	char *path, *pvalue, *msg, *cmd = argv[0];
-	char **paths;
+	char *path, *msg, **paths, *cmd = argv[0];
 	dir_type *dir_head, *dir_node;
 
-	printf("In function evaluate\n");
 	exe = exec_bin(argv, envp);
 	msg = "Couldn't resolve PATH";
 	if (exe == NULL)
 	{
-		printf("Not a builtin cmd.\n");
-		pvalue = genv("PATH");
-
-		if (pvalue == NULL)
-			return (panic(msg, NULL, NULL, 1));
-		paths = make_tokens(pvalue, ":");
-		if (paths == NULL)
+		if (is_a_dir(cmd))
 		{
-			perror("paths no exist");
-			return (panic(msg, NULL, NULL, 1));
+			status = dummy_process(cmd, argv, envp);
+			return (status);
 		}
+		paths = make_tokens(genv("PATH"), ":");
 		dir_node = build_dir_chain(paths);
 		if (dir_node == NULL)
 		{
-			perror("dirnode is NULL");
-			return (panic(msg, NULL, paths, 1));
+			perror(msg);
+			free_table(paths);
+			return (1);
 		}
-
 		/* save this. note - could implement free directly */
 		dir_head = dir_node;
 		while (dir_node != NULL)
 		{
-			printf("dir_node is NOT NULL\n");
 			path = cmd_as_dir(cmd, dir_node->dir);
 			if (path == NULL)
 				return (panic(msg, NULL, paths, 1));
-			/* does the file exist? */
-			/* try just one file. our job is not to try every */
 			if (file_exists(path))
 			{
-				printf("Filefound: %s\n", path); /* DEBUG */
 				status = dummy_process(path, argv, envp);
 				break;
 			}
 			dir_node = dir_node->next;
 		}
-		printf("About to free the dir_list\n");
 		free_list(dir_head);
-		printf("dir list freedd. about to free paths.\n");
 		free_table(paths);
-		printf("paths freed.\n");
 	}
 	else
 		status = exe();
-	printf("leaving function evaluate...\n");
 
 	return (status);
+}
+
+
+/**
+ * try_paths - build a path list and try em all.
+ * Return: always returns 1.
+ */
+int try_paths(void)
+{
+	return (1);
 }
 
 
@@ -82,7 +77,6 @@ int dummy_process(char *cmd, char **argv, char **envp)
 	int exe;
 	pid_t cid;
 
-	printf("Inside dummy rpocess\n");
 	cid = fork();
 	if (cid == -1)
 	{
@@ -114,7 +108,6 @@ int file_exists(char *path)
 	int value;
 	struct stat buffer;
 
-	printf("Checking if file exists.\n");
 	value = stat(path, &buffer);
 	if (value == 0)
 		return (1);

@@ -9,11 +9,11 @@
  */
 char **make_tokens(char *str, char *delim)
 {
-	int i;
-	int buf = 64;
-	int bufsize = 64;
+	int i, buf = 64, bufsize = 64;
 	char *temp, **tokens;
 
+	if (str == NULL)
+		return (NULL);
 	tokens = malloc(buf * sizeof(char**));
 	if (tokens == NULL)
 		return (NULL);
@@ -27,13 +27,10 @@ char **make_tokens(char *str, char *delim)
 			tokens = realloc(tokens, bufsize * sizeof(char**));
 			if (tokens == NULL)
 			{
-				perror("make_tokens: couldn't parse all input");
-				/* why can't we return partial tokens */
 				free_table(tokens);
 				return (NULL);
 			}
 		}
-		/* this line may cause memory leaks */
 		tokens[i] = strdup(temp);
 		if (tokens[i] == NULL)
 		{
@@ -41,11 +38,9 @@ char **make_tokens(char *str, char *delim)
 			free_table(tokens);
 			return (NULL);
 		}
-		/* printf("token read: %s\n", tokens[i]); DEBUG LINE */
 		temp = strtok(NULL, delim);
 	}
 	tokens[i] = NULL;
-	/* printf("..............TOKENS COMPLETE!...............\n"); DEBUG LINE */
 
 	return (tokens);
 }
@@ -77,7 +72,6 @@ char **envcopy(void)
 			free_table(envp);
 			return (NULL);
 		}
-	/*	printf("env copied!!! %s\n", envp[i]);  FOR DEBUG */
 	}
 	envp[i] = NULL;
 
@@ -99,8 +93,6 @@ char *genv(char *name)
 	char *n; char *v;
 	char **env = envcopy();
 
-	printf("	inside genv.\n");
-
 	if (env != NULL)
 	{
 		v = NULL;
@@ -115,7 +107,6 @@ char *genv(char *name)
 		}
 		return (v);
 	}
-	printf("	leaving genv\n");
 
 	return (NULL);
 }
@@ -136,7 +127,6 @@ char *cmd_as_dir(char *str, char *prefix)
 	int len1, len2;
 	int k;
 
-	printf("	changing arg to dir.\n");
 	if (prefix != NULL)
 	{
 		len1 = strlen(prefix);
@@ -152,7 +142,6 @@ char *cmd_as_dir(char *str, char *prefix)
 			for (k = 0 ; k < len2 ; ++k)
 				new_str[k + 1 + len1] = old_cmd[k];
 			new_str[k + 1 + len1] = '\0';
-			printf("new str - %s\n", new_str); /* DEBUG */
 
 			return (new_str);
 		}
