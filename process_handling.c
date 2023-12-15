@@ -11,18 +11,30 @@ int evaluate(char **argv, char **envp)
 {
 	int status;
 	int (*exe)(void);
-	char *path, *cmd = argv[0];
+	char *path, *pvalue, *cmd = argv[0];
 	char **paths;
 	dir_type dir_node;
 
 	exe = exec_bin(argv, envp);
 	if (exe == NULL)
 	{
-		paths = make_tokens(genv("PATH"));
+		pvalue = genv("PATH");
+		if (pvalue == NULL)
+		{
+			perror("Couldn't resolve PATH");
+			return (1);
+		}
+		paths = make_tokens(pvalue);
+		if (paths == NULL)
+		{
+			perror("Couldn't resolve PATH");
+			free(pvalue);
+			return (1);
+		}
 		dir_node = build_dir_chain(paths);
 		if (dir_node == NULL)
 		{
-			perror("Couldn't resolve PATh");
+			perror("Couldn't resolve PATH");
 			free_table(paths);
 			return (1);
 		}
@@ -39,7 +51,7 @@ int evaluate(char **argv, char **envp)
 			}
 			dir_node = dir_node->next;
 		}
-		free_table(paths);
+		cleanup(pvalue, paths);
 	}
 	else
 		status = exe();

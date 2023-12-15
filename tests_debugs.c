@@ -16,6 +16,23 @@ void dump(char *str1, char *str2)
 }
 
 
+/**
+ * panic - print error message, clean and return.
+ * @msg: perror to print.
+ * @str: str to clean.
+ * @table: char array to clean.
+ * @ret: int to return
+ * Return: what user gives.
+ */
+int panic(char *msg, char *str, char **table, int ret)
+{
+	perror(msg);
+	cleanup(str, table);
+
+	return (ret);
+}
+
+
 
 /**
  * print_list - prints the elements of a linked list
