@@ -3,7 +3,6 @@
 
 /**
  * evaluate - execute a list of commands.
- * assumes that argv[0] is in dir form.
  * @argv: a command followed by its arguments.
  * @envp: environment variables.
  * Return: returns -1 if command is exit, returns 1 else.
@@ -12,18 +11,35 @@ int evaluate(char **argv, char **envp)
 {
 	int status;
 	int (*exe)(void);
+	char *path, *cmd = argv[0];
+	char **paths;
+	dir_type dir_node;
 
 	exe = exec_bin(argv, envp);
 	if (exe == NULL)
 	{
-	/* 
-	 * check if cmd  file exists before forking over
-	 * pls wrap this fork n stuff inside a dummy process.
-	 * let evaluate deal with the fork business and return either 1 or -1
-	 * return -1 if cmd is exit. return 1 otherwise.
-	 */
-		/* prep argv[0] and try every path */
-		status = dummy_process(cmd, argv, envp);
+		paths = make_tokens(genv("PATH"));
+		dir_node = build_dir_chain(paths);
+		if (dir_node == NULL)
+		{
+			perror("Couldn't resolve PATh");
+			free_table(paths);
+			return (1);
+		}
+		while (dir_node != NULL)
+		{
+			path = cmd_as_dir(cmd, dir_node->dir);
+			/* does the file exist? */
+			/* try just one file. our job is not to try every */
+			if (stat(path))
+			{
+				printf("Filefound: %s\n", path); /* DEBUG */
+				status = dummy_process(path, argv, envp);
+				break;
+			}
+			dir_node = dir_node->next;
+		}
+		free_table(paths);
 	}
 	else
 		status = exe();
