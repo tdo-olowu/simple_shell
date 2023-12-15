@@ -11,36 +11,33 @@ int evaluate(char **argv, char **envp)
 {
 	int status;
 	int (*exe)(void);
-	char *path, *pvalue, *cmd = argv[0];
+	char *path, *pvalue, *msg, *cmd = argv[0];
 	char **paths;
 	dir_type dir_node;
 
 	exe = exec_bin(argv, envp);
+	msg = "Couldn't resolve PATH";
 	if (exe == NULL)
 	{
 		pvalue = genv("PATH");
+
 		if (pvalue == NULL)
-		{
-			perror("Couldn't resolve PATH");
-			return (1);
-		}
+			return (panic(msg, NULL, NULL, 1));
 		paths = make_tokens(pvalue);
 		if (paths == NULL)
-		{
-			perror("Couldn't resolve PATH");
-			free(pvalue);
-			return (1);
-		}
+			return (panic(msg, pvalue, NULL, 1));
 		dir_node = build_dir_chain(paths);
 		if (dir_node == NULL)
-		{
-			perror("Couldn't resolve PATH");
-			free_table(paths);
-			return (1);
-		}
+			return (panic(msg, pvalue, paths, 1));
+
 		while (dir_node != NULL)
 		{
 			path = cmd_as_dir(cmd, dir_node->dir);
+			if (path == NULL)
+			{
+				free(path);
+				return (panic(msg, pvalue, paths, 1))
+			}
 			/* does the file exist? */
 			/* try just one file. our job is not to try every */
 			if (stat(path))

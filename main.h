@@ -74,6 +74,7 @@ void free_list(dir_type*);
 
 /* testing and debugging functions */
 void dump(char*, char*);
+int panic(char*, char*, char**, int);
 
 
 
