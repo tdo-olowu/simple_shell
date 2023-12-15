@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 
 /* type and struct definitions */
 typedef struct node dir_type;
@@ -61,6 +62,7 @@ dir_type *build_dir_chain(char**);
 /* process_handling */
 int evaluate(char**, char**);
 int dummy_process(char*, char**, char**);
+int file_exists(char*);
 
 /* builtins */
 int (*exec_bin(char**, char**))(void);

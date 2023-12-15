@@ -40,7 +40,7 @@ int evaluate(char **argv, char **envp)
 			}
 			/* does the file exist? */
 			/* try just one file. our job is not to try every */
-			if (stat(path))
+			if (file_exists(path))
 			{
 				printf("Filefound: %s\n", path); /* DEBUG */
 				status = dummy_process(path, argv, envp);
@@ -88,6 +88,24 @@ int dummy_process(char *cmd, char **argv, char **envp)
 
 	return (1);
 }
+
+
+/**
+ * file_exists - check if a file exists.
+ * @path: filepath.
+ * Return: 0 if file doesn't exist, 1 if it exists.
+ */
+int file_exists(char *path)
+{
+	int value;
+	struct stat buffer;
+
+	value = stat(path, &buffer);
+	if (value == 0)
+		return (1);
+	return (0);
+}
+
 
 /**
  * if (WIFEXITED(exe) && WEXITSTATUS(exe) == EXIT_SUCCESS)
