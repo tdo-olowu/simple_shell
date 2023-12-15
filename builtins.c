@@ -10,14 +10,17 @@
 int (*exec_bin(char **argv, char **envp))(void)
 {
 	size_t i;
+	size_t range;
 	int (*function)(void);
 	char *bin_name;
 	bin_type bin_map[] = {{"exit", hsh_exit},
-			      {"env", penv}}
+			      {"env", penv}};
 
 	/* envp isn't useful for now */
 	(void)envp;
-	for (i = 0 ; i < sizeof(bin_map) ; ++i)
+	range = sizeof(bin_map) / sizeof(bin_type);
+	printf("sizeof bin_map = %lu\n", range);
+	for (i = 0 ; i < range ; ++i)
 	{
 		bin_name = (bin_map[i]).name;
 		function = (bin_map[i]).func;
