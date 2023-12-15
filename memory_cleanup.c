@@ -51,7 +51,10 @@ void free_list(dir_type *head)
 void cleanup(char *line, char **table)
 {
 	if (line != NULL)
+	{
+		printf("About to free line.\n");
 		free(line);
+	}
 	if (table != NULL)
 		free_table(table);
 }

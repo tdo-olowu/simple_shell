@@ -91,7 +91,7 @@ dir_type *build_dir_chain(char **paths)
 			free_list(init_tail);
 			return (NULL);
 		}
-		if (i = 0)
+		if (i == 0)
 			init_tail = new_tail;
 		printf("	new_tail added: %s", new_tail->dir); /* DEBUG */
 		printf("init_tail still %s\n", init_tail->dir);

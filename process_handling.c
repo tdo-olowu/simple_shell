@@ -24,21 +24,18 @@ int evaluate(char **argv, char **envp)
 		pvalue = genv("PATH", envp);
 
 		if (pvalue == NULL)
-		{
-			perror("pvalue no exist");
 			return (panic(msg, NULL, NULL, 1));
-		}
 		paths = make_tokens(pvalue, ":");
 		if (paths == NULL)
 		{
 			perror("paths no exist");
-			return (panic(msg, pvalue, NULL, 1));
+			return (panic(msg, NULL, NULL, 1));
 		}
 		dir_node = build_dir_chain(paths);
 		if (dir_node == NULL)
 		{
 			perror("dirnode is NULL");
-			return (panic(msg, pvalue, paths, 1));
+			return (panic(msg, NULL, paths, 1));
 		}
 
 		/* save this. note - could implement free directly */
@@ -48,7 +45,7 @@ int evaluate(char **argv, char **envp)
 			printf("dir_node is NOT NULL\n");
 			path = cmd_as_dir(cmd, dir_node->dir);
 			if (path == NULL)
-				return (panic(msg, pvalue, paths, 1));
+				return (panic(msg, NULL, paths, 1));
 			/* does the file exist? */
 			/* try just one file. our job is not to try every */
 			if (file_exists(path))
@@ -59,8 +56,11 @@ int evaluate(char **argv, char **envp)
 			}
 			dir_node = dir_node->next;
 		}
+		printf("About to free the dir_list\n");
 		free_list(dir_head);
-		cleanup(pvalue, paths);
+		printf("dir list freedd. about to free paths.\n");
+		free_table(paths);
+		printf("paths freed.\n");
 	}
 	else
 		status = exe();
