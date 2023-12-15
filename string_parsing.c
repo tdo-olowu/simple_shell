@@ -116,21 +116,20 @@ char *genv(char *name, char **env)
  * cmd_as_dir - process argv's first cmd so that executor can use it properly.
  * later, we'll add another argument - a list of paths to try?
  * this function is a primitive version of try-paths.
- * @str: the address of the string to be processed.
+ * @str: the suffix.
  * @pref: what to append to the str e.g. /bin/
- * Return: none
+ * Return: pointer to char
  */
-void cmd_as_dir(char **str, char *prefix)
+char *cmd_as_dir(char *str, char *prefix)
 {
-	char *old_cmd = *str;
-	char *dir_pre, new_str;
+	char *old_cmd = str;
+	char *new_str;
 	int len1, len2;
 	int k;
 
 	if (prefix != NULL)
 	{
-		dir_pre = prefix;
-		len1 = strlen(dir_pre);
+		len1 = strlen(prefix);
 		len2 = strlen(old_cmd);
 		/* 2 cuz of that pesky / not included in PATh */
 		new_str = malloc((2 + len1 + len2) * sizeof(char));
@@ -138,20 +137,18 @@ void cmd_as_dir(char **str, char *prefix)
 		if (new_str != NULL)
 		{
 			for (k = 0 ; k < len1 ; ++k)
-				new_str[k] = dir_pre[k];
+				new_str[k] = prefix[k];
 			new_str[k] = '/';
 			for (k = 0 ; k < len2 ; ++k)
 				new_str[k + 1 + len1] = old_cmd[k];
 			new_str[k + 1 + len1] = '\0';
 			printf("new str - %s\n", new_str); /* DEBUG */
 
-			old_cmd = strdup(new_str);
-			/* what if duplication fails? */
-			if (old_cmd == NULL) 
-			{
-				/* make sure caller temporarily stores original */
-				perror("Could not prepend directory name.");
-			}
+			return (new_str);
 		}
+		perror("Couldn't prepend directory");
+		return (NULL);
 	}
+
+	return (old_cmd);
 }
