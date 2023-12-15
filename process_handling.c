@@ -9,7 +9,7 @@
  */
 int evaluate(char **argv, char **envp)
 {
-	int status;
+	int status = 1;
 	int (*exe)(void);
 	char *path, *pvalue, *msg, *cmd = argv[0];
 	char **paths;
