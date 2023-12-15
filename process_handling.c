@@ -13,33 +13,41 @@ int evaluate(char **argv, char **envp)
 	int (*exe)(void);
 	char *path, *pvalue, *msg, *cmd = argv[0];
 	char **paths;
-	dir_type *dir_node;
+	dir_type *dir_head, *dir_node;
 
 	printf("In function evaluate\n");
 	exe = exec_bin(argv, envp);
 	msg = "Couldn't resolve PATH";
 	if (exe == NULL)
 	{
-		printf("Not a builtin cmd.");
+		printf("Not a builtin cmd.\n");
 		pvalue = genv("PATH", envp);
 
 		if (pvalue == NULL)
+		{
+			perror("pvalue no exist");
 			return (panic(msg, NULL, NULL, 1));
+		}
 		paths = make_tokens(pvalue, ":");
 		if (paths == NULL)
+		{
+			perror("paths no exist");
 			return (panic(msg, pvalue, NULL, 1));
+		}
 		dir_node = build_dir_chain(paths);
 		if (dir_node == NULL)
+		{
+			perror("dirnode no exist no mo");
 			return (panic(msg, pvalue, paths, 1));
+		}
 
+		/* save this. note - could implement free directly */
+		dir_head = dir_node;
 		while (dir_node != NULL)
 		{
 			path = cmd_as_dir(cmd, dir_node->dir);
 			if (path == NULL)
-			{
-				free(path);
 				return (panic(msg, pvalue, paths, 1));
-			}
 			/* does the file exist? */
 			/* try just one file. our job is not to try every */
 			if (file_exists(path))
@@ -50,10 +58,12 @@ int evaluate(char **argv, char **envp)
 			}
 			dir_node = dir_node->next;
 		}
+		free_list(dir_head);
 		cleanup(pvalue, paths);
 	}
 	else
 		status = exe();
+	printf("leaving function evaluate...\n");
 
 	return (status);
 }
