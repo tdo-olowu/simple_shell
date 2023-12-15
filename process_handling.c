@@ -11,7 +11,6 @@
 int evaluate(char **argv, char **envp)
 {
 	int exe;
-	pid_t cid;
 
 	/* 
 	 * check if cmd  file exists before forking over
@@ -19,6 +18,7 @@ int evaluate(char **argv, char **envp)
 	 * let evaluate deal with the fork business and return either 1 or -1
 	 * return -1 if cmd is exit. return 1 otherwise.
 	 */
+	exe = dummy_process(argv, envp);
 	cid = fork();
 	if (cid == -1)
 	{
@@ -41,20 +41,7 @@ int evaluate(char **argv, char **envp)
 	wait(NULL);
 	printf("evaluate function returning 1...\n"); /* DEBUG */
 
-	return (1);
-
-	/* actually, I want to return -1 only if the command is exit.
-	if (WIFEXITED(exe) && WEXITSTATUS(exe) == 0)
-	{
-		printf("child process executed successfully.\n");
-		return (1);
-	}
-	else
-	{
-		printf("Child process failed to execute");
-		return (-1);
-	}
-	*/
+	return (exe);
 }
 
 
@@ -67,21 +54,31 @@ int evaluate(char **argv, char **envp)
 int dummy_process(char **argv, char **envp)
 {
 	int exe;
-	int cid = fork();
+	pid_t cid;
 
-	if (cid == 0)
+	cid = fork();
+	if (cid == -1)
 	{
-		printf("	child.:\n");
+		perror("Couldn't create subprocess");
+		exit(EXIT_FAILURE);
+	}
+	else if (cid == 0)
+	{
 		exe = execve(argv[0], argv, envp);
 		if (exe < 0)
 		{
-			perror("hsh: couldn't execute command");
+			perror("Couldn't execute command");
 			exit(EXIT_FAILURE);
 		}
 	}
-	printf("	parent about to wait...");
 	wait(NULL);
-	printf("	done waiting. returning 1");
 
 	return (1);
 }
+
+/**
+ * if (WIFEXITED(exe) && WEXITSTATUS(exe) == EXIT_SUCCESS)
+ * 	child succeeded.
+ * else
+ * 	child failed to execute.
+ */

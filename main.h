@@ -43,6 +43,7 @@ dir_type *build_dir_chain(char**);
 
 /* process_handling */
 int evaluate(char**, char**);
+int dummy_process(char**, char**);
 
 /* builtins */
 int hsh_exit(void);
