@@ -29,12 +29,17 @@ char **make_tokens(char*, char*);
 char **envcopy(void);
 void cmd_as_dirs(char**);
 
+/* path handling */
+dir_type *append_dir_node(dir_type**, char*);
+dir_type *build_dir_chain(dir_type**);
+
 /* process_handling */
 int evaluate(char**, char**);
 
 /* memory management */
 void free_table(char**);
 void cleanup(char*, char**);
+void free_list(dir_type*);
 
 /* testing and debugging functions */
 void dump(char*, char*);
