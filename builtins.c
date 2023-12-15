@@ -27,10 +27,10 @@ int exec_bin(char **argv, char **envp)
 
 	for (i = 0 ; i < sizeof(bin_map) ; ++i)
 	{
-		bin_name = bin_map[i]->name;
-		if (name == NULL)
+		bin_name = (bin_map[i])->name;
+		if (bin_name == NULL)
 			return (-1); /* depends on order of NULL */
-		function = bin_map[i]->func;
+		function = &(bin_map[i])->func;
 		if (strcmp(arg, bin_name) == 0)
 		{
 			status = function(); /* should get an integer */
@@ -54,9 +54,9 @@ int hsh_exit(void)
 
 /**
  * penv - prints environment variables.
- * Return: none.
+ * Return: always returns 1. sho
  */
-void penv(void)
+int penv(void)
 {
 	int i;
 	char **env = envcopy();
@@ -70,4 +70,6 @@ void penv(void)
 	}
 	else
 		perror("Couldn't print environment variables");
+
+	return (1);
 }

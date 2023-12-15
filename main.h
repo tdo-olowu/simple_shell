@@ -64,7 +64,7 @@ int dummy_process(char**, char**);
 /* builtins */
 int exec_bin(char**, char**);
 int hsh_exit(void);
-void penv(void);
+int penv(void);
 
 /* memory management */
 void free_table(char**);
