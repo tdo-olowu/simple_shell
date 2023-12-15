@@ -20,9 +20,14 @@ char **tokenify(char *str, char *delim)
 		{
 			bufsize += BUF;
 			tokens = realloc(tokens, bufsize * sizeof(char*));
+			if (tokens == NULL)
+			{
+				perror("Can't read anymore");
+				break;
+			}
 		}
 		tokens[i] = strdup(word);
-		word = strtok(NULL, delim);
+		word = strtok(str, delim);
 	}
 	tokens[i] = NULL;
 
