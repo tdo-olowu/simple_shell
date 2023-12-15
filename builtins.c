@@ -9,14 +9,8 @@
  */
 int exec_bin(char **argv, char **envp)
 {
-	/**
-	 * here's the plan - extract argv[0]
-	 * compare it against a list of bins.
-	 * where there's a match, 'execute' and return value
-	 * if no match, return -1
-	 * notice that the bins are essentially "void" functions
-	 */
-	int i;
+	(void)envp; /* not useful right now */
+	size_t i;
 	int status = -1; /* assume it does not exist */
 	int (*function)(void); /* ptr to funct that takes void* and give int */
 	char *arg = argv[0];
@@ -27,10 +21,10 @@ int exec_bin(char **argv, char **envp)
 
 	for (i = 0 ; i < sizeof(bin_map) ; ++i)
 	{
-		bin_name = (bin_map[i])->name;
+		bin_name = (bin_map[i]).name;
 		if (bin_name == NULL)
 			return (-1); /* depends on order of NULL */
-		function = &(bin_map[i])->func;
+		function = &(bin_map[i]).func;
 		if (strcmp(arg, bin_name) == 0)
 		{
 			status = function(); /* should get an integer */
