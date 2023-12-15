@@ -13,17 +13,18 @@ int evaluate(char **argv, char **envp)
 	int (*exe)(void);
 	char *path, *pvalue, *msg, *cmd = argv[0];
 	char **paths;
-	dir_type dir_node;
+	dir_type *dir_node;
 
+	printf("In function evaluate\n");
 	exe = exec_bin(argv, envp);
 	msg = "Couldn't resolve PATH";
 	if (exe == NULL)
 	{
-		pvalue = genv("PATH");
+		pvalue = genv("PATH", envp);
 
 		if (pvalue == NULL)
 			return (panic(msg, NULL, NULL, 1));
-		paths = make_tokens(pvalue);
+		paths = make_tokens(pvalue, ":");
 		if (paths == NULL)
 			return (panic(msg, pvalue, NULL, 1));
 		dir_node = build_dir_chain(paths);
@@ -36,7 +37,7 @@ int evaluate(char **argv, char **envp)
 			if (path == NULL)
 			{
 				free(path);
-				return (panic(msg, pvalue, paths, 1))
+				return (panic(msg, pvalue, paths, 1));
 			}
 			/* does the file exist? */
 			/* try just one file. our job is not to try every */
@@ -69,6 +70,7 @@ int dummy_process(char *cmd, char **argv, char **envp)
 	int exe;
 	pid_t cid;
 
+	printf("Inside dummy rpocess\n");
 	cid = fork();
 	if (cid == -1)
 	{
@@ -100,6 +102,7 @@ int file_exists(char *path)
 	int value;
 	struct stat buffer;
 
+	printf("Checking if file exists.\n");
 	value = stat(path, &buffer);
 	if (value == 0)
 		return (1);

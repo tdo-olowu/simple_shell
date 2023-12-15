@@ -82,6 +82,7 @@ dir_type *build_dir_chain(char **paths)
 	dir_type *init_tail = NULL;
 	dir_type *new_tail = init_tail;
 
+	printf(".......STARTING CHAIN...........\n");
 	for (i = 0 ; paths[i] != NULL ; ++i)
 	{
 		new_tail = append_node(&new_tail, paths[i]);
@@ -90,8 +91,9 @@ dir_type *build_dir_chain(char **paths)
 			free_list(init_tail);
 			return (NULL);
 		}
-		printf("new_tail added: %s\n", new_tail->dir); /* DEBUG */
+		printf("	new_tail added: %s\n", new_tail->dir); /* DEBUG */
 	}
+	printf(".....CHAIN COMPLETE!................\n");
 
 	return (init_tail);
 }

@@ -52,7 +52,7 @@ ssize_t getcmd(char**, size_t*, FILE*);
 char **make_tokens(char*, char*);
 char **envcopy(void);
 char *cmd_as_dir(char*, char*);
-char *genv(char*, char*);
+char *genv(char*, char**);
 
 /* path handling */
 dir_type *append_dir_node(dir_type**, char*);
