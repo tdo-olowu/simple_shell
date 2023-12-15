@@ -98,12 +98,13 @@ char *genv(char *name, char **env)
 	int i;
 	char *n; char *v;
 
+	printf("	inside genv.\n");
 	for (i = 0 ; env[i] != NULL ; ++i)
 	{
 		n = strtok(env[i], "=");
 		if (strcmp(name, n) == 0)
 		{
-			v = strtok(env[i], "=");
+			v = strtok(NULL, "=");
 			return (v);
 		}
 	}
@@ -127,6 +128,7 @@ char *cmd_as_dir(char *str, char *prefix)
 	int len1, len2;
 	int k;
 
+	printf("	changing arg to dir.\n");
 	if (prefix != NULL)
 	{
 		len1 = strlen(prefix);

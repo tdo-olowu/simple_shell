@@ -20,6 +20,7 @@ int evaluate(char **argv, char **envp)
 	msg = "Couldn't resolve PATH";
 	if (exe == NULL)
 	{
+		printf("Not a builtin cmd.");
 		pvalue = genv("PATH", envp);
 
 		if (pvalue == NULL)
