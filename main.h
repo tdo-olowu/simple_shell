@@ -11,6 +11,13 @@
 /* type and struct definitions */
 typedef struct node dir_type;
 
+/**
+ * struct node - simply linked list
+ * @dir: a string holding the directory prefix.
+ * @next: pointer to the next node.
+ *
+ * Description: singly-linked list for PATH
+ */
 struct node {
 	char *dir;
 	dir_type *next;
