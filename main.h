@@ -34,9 +34,12 @@ dir_type *append_dir_node(dir_type**, char*);
 dir_type *append_node(dir_type**, char*);
 dir_type *build_dir_chain(char**);
 
-
 /* process_handling */
 int evaluate(char**, char**);
+
+/* builtins */
+int hsh_exit(void);
+void penv(char**);
 
 /* memory management */
 void free_table(char**);

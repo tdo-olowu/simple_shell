@@ -11,7 +11,7 @@ char **make_tokens(char *str, char *delim)
 {
 	int i;
 	int buf = 64;
-       	int bufsize = 64;
+	int bufsize = 64;
 	char *temp, **tokens;
 
 	tokens = malloc(buf * sizeof(char**));
@@ -82,6 +82,32 @@ char **envcopy(void)
 	return (envp);
 }
 
+
+
+/**
+ * genv - an implementation of getenv.
+ * @name: the name of the value
+ * @env: the environment variable.
+ * Return: the value of the name
+ * pls fix leading whitespace.
+ */
+char *genv(char *name, char **env)
+{
+	int i;
+	char *n; char *v;
+
+	for (i = 0 ; env[i] != NULL ; ++i)
+	{
+		n = strtok(env[i], "=");
+		if (strcmp(name, n) == 0)
+		{
+			v = strtok(env[i], "=");
+			return (v);
+		}
+	}
+
+	return (NULL);
+}
 
 
 /**
