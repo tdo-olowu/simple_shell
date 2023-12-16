@@ -3,15 +3,15 @@
 
 /**
  * interactive_mode - REPL
- * @environ: the environment variable
+ * @env: the environment variable
  * Return: nothing, but will exit SUCCESS once done.
  */
-void interactive_mode(char **environ)
+void interactive_mode(char **env)
 {
 	size_t cmdlen = 0;
 	ssize_t bytes_read = -1;
-	char *cmdline = NULL, **argv = NULL, **envp = envcopy(environ);
-	int eval = 1, exit_stat = 0;
+	char *cmdline = NULL, **argv = NULL; **ev = envcopy(env);
+	int eval = 1, exit_stat = EXIT_SUCEESS;
 
 	do {
 		printf("($) ");
@@ -19,12 +19,8 @@ void interactive_mode(char **environ)
 		if (bytes_read < 0)
 		{
 			if (feof(stdin))
-			{
-				free(cmdline);
-				exit(EXIT_SUCCESS);
-			}
-			else
-				perror("Couldn't read input for some reason. Try again.");
+				break;
+			perror("Couldn't read input for some reason. Try again");
 		}
 		else if (bytes_read == 0)
 			eval = 1;
@@ -39,10 +35,16 @@ void interactive_mode(char **environ)
 				free_table(argv);
 				break;
 			}
-			eval = evaluate(argv, envp);
+			if (exit_stat == -10)
+			{
+				free_table(argv);
+				continue;
+			}
+			eval = evaluate(argv, ev);
 			free_table(argv);
 		}
 	} while (eval == 1);
 	free(cmdline);
+	free_table(ev);
 	exit(exit_stat);
 }

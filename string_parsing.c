@@ -49,6 +49,7 @@ char **make_tokens(char *str, char *delim)
 
 /**
  * envcopy - summons and copies over the ENV variable somehow.
+ * this copy of envcopy is destructive. pls modify.
  * @environ: the environment variable.
  * Return: a copy of environ.
  */
@@ -56,7 +57,7 @@ char **envcopy(char **environ)
 {
 	int i = 0;
 	int buf = 64;
-	char **envp = environ;
+	char **envp;
 
 	envp = malloc(buf * sizeof(char **));
 	if (envp == NULL)
@@ -81,27 +82,31 @@ char **envcopy(char **environ)
 /**
  * genv - an implementation of getenv.
  * @name: the name of the value
- * @environ: the environment.
+ * @env: the environment.
  * Return: the value of the name
  * pls fix leading whitespace.
  */
-char *genv(char *name, char **environ)
+char *genv(char *name, char **env)
 {
 	int i;
-	char *n, *v;
-	char **env = envcopy(environ);
+	char *n, *v, *temp;
 
 	if (env != NULL)
 	{
 		v = NULL;
 		for (i = 0 ; env[i] != NULL ; ++i)
 		{
-			n = strtok(env[i], "=");
+			temp = strdup(env[i]);
+			if (temp == NULL)
+				return (NULL);
+			n = strtok(temp, "=");
 			if (strcmp(name, n) == 0)
 			{
 				v = strtok(NULL, "=");
+				free(temp);
 				break;
 			}
+			free(temp);
 		}
 		return (v);
 	}
