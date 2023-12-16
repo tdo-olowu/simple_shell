@@ -1,0 +1,6 @@
+ls -a
+cal
+gbgbru
+exit
+ls
+env

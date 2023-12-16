@@ -2,19 +2,20 @@
 
 
 /**
- * interactive_mode - REPL
- * Return: nothing, but will exit SUCCESS once done.
+ * file_mode - reads input from a file or is passed input
+ * Return: nothing, but may exit success of failure.
  */
-void interactive_mode(void)
+void file_mode(int ac, char **av, char **env)
 {
+	char *prog_name = av[0];
+	char *cmd_name = ((ac >= 2) ? av[1] : NULL);
 	size_t cmdlen = 0;
 	ssize_t bytes_read = -1;
 	char *cmdline = NULL, **argv = NULL;
-	char **envp = envcopy();
+	char **envp = env;
 	int eval = 1;
 
 	do {
-		printf("($) ");
 		bytes_read = getcmd(&cmdline, &cmdlen, stdin);
 		if (bytes_read < 0)
 		{
@@ -27,7 +28,7 @@ void interactive_mode(void)
 				perror("Couldn't read input for some reason. Try again.");
 		}
 		else if (bytes_read == 0)
-			eval = 1;
+			eval = -1;
 		else
 		{
 			argv = make_tokens(cmdline, " ");
@@ -37,20 +38,9 @@ void interactive_mode(void)
 		/* /free(cmdline);*/
 	} while (eval == 1);
 	free(cmdline);
-}
 
-
-
-/**
- * file_mode - reads input from a file or is passed input
- * Return: nothing, but may exit success of failure.
- */
-void file_mode(int ac, char **av, char **env)
-{
-	(void)ac;
-	(void)av;
-	(void)env;
-	exit(EXIT_FAILURE);
+	(void)prog_name;
+	(void)cmd_name;
 }
 
 /**
