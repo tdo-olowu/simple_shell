@@ -133,7 +133,7 @@ int is_exit(char **argv)
 	int good_bad = -10;
 	size_t ac;
 	const char *ex = "exit";
-	char *msg = "hsh: Illegal number: %s\n";
+	char *msg = "./hsh: 1: exit: Illegal number: %s\n";
 
 	/* char *msg2 = "hsh: Illegal number: %d\n"; */
 
