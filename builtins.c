@@ -79,37 +79,37 @@ int hsh_cd(char **argv, char **envp)
 	int env_change;
 	size_t ac = count_args(argv);
 
-	puts("inside cd\n");
 	(void)envp;
 	if (ac == 1)
 	{
-		printf("%s\n", argv[0]);
-		new_dir = (const char *)getenv("HOME");
+		new_dir = getenv("HOME");
+		if (new_dir == NULL)
+		{
+			perror("hsh");
+			return (1);
+		}
 		dir_change = chdir(new_dir);
 	}
 	else if (ac == 2)
 	{
-		printf("%s %s\n", argv[0], argv[1]);
 		new_dir = (const char *)argv[1];
-		new_dir = (const char *)getenv(new_dir);
+	 	/* new_dir = (const char *)getenv(new_dir); */
 		dir_change = chdir(new_dir);
 	}
 	else
 	{
-		printf("%s\n", argv[0]);
-		perror("hsh: improper number of arguments.");
+		perror("hsh");
+		return (1);
 	}
 	/* this might cause issues. perror for ac > 2 will success? */
 	if (dir_change < 0)
 	{
-		perror("hsh:");
-		return (1);
+		perror("hsh");
 	}
 	env_change = setenv("PWD", new_dir, 1);
 	if (env_change < 0)
-		perror("hsh:");
+		perror("hsh");
 
-	puts("leaving cd\n");
 	return (1);
 }
 

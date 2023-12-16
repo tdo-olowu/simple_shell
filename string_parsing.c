@@ -77,11 +77,12 @@ char **make_tokens(char *str, char *delim)
  */
 char **envcopy(char **environ)
 {
-	int i = 0;
-	int buf = 64;
-	char **envp;
+	size_t i;
+	char **envp = environ;
 
-	envp = malloc(buf * sizeof(char **));
+	i = count_args(envp);
+
+	envp = malloc((i + 1) * sizeof(char *));
 	if (envp == NULL)
 		return (NULL);
 	for (i = 0 ; environ[i] != NULL ; ++i)
