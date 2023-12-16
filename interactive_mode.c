@@ -11,7 +11,7 @@ void interactive_mode(char **environ)
 	size_t cmdlen = 0;
 	ssize_t bytes_read = -1;
 	char *cmdline = NULL, **argv = NULL, **envp = envcopy(environ);
-	int eval = 1;
+	int eval = 1, exit_stat = 0;
 
 	do {
 		printf("($) ");
@@ -32,12 +32,17 @@ void interactive_mode(char **environ)
 		{
 			argv = make_tokens(cmdline, " ");
 			if (argv == NULL)
-			{
 				continue;
+			exit_stat = is_exit(argv);
+			if (exit_stat >= 0)
+			{
+				free_table(argv);
+				break;
 			}
 			eval = evaluate(argv, envp);
 			free_table(argv);
 		}
 	} while (eval == 1);
 	free(cmdline);
+	exit(exit_stat);
 }

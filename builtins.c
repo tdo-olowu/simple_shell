@@ -7,14 +7,14 @@
  * @envp: environment variables just in case.
  * Return: 1 for success, -1 for failure.
  */
-int (*exec_bin(char **argv, char **envp))(char **)
+int (*exec_bin(char **argv, char **envp))(char **, char **)
 {
 	size_t i;
 	size_t range;
-	int (*function)(char **);
+	int (*function)(char **, char **);
 	char *bin_name;
-	bin_type bin_map[] = {{"exit", hsh_exit},
-			      {"env", penv}};
+	bin_type bin_map[] = {{"env", penv},
+			      {"cd", hsh_cd}};
 
 	if (argv == NULL)
 		return (NULL);
@@ -37,28 +37,19 @@ int (*exec_bin(char **argv, char **envp))(char **)
 }
 
 
-/**
- * hsh_exit - exits the hshell.
- * @argv: what do you need this for?
- * Return: value to break control of loop.
- */
-int hsh_exit(char **argv)
-{
-	(void)argv;
-	return (-1);
-}
-
 
 /**
  * penv - prints environment variables.
+ * @argv: list
  * @envp: list of environment variables.
  * Return: always returns 1. sho
  */
-int penv(char **envp)
+int penv(char **argv, char **envp)
 {
 	int i;
-	char **env = envcopy(envp);
+	char **env = envp;
 
+	(void)argv;
 	if (env != NULL)
 	{
 		for (i = 0 ; env[i] != NULL ; ++i)
@@ -70,4 +61,94 @@ int penv(char **envp)
 		perror("Couldn't print environment variables");
 
 	return (1);
+}
+
+
+/**
+ * hsh_cd - changes the current directory.
+ * @argv: list of arguments.
+ * @envp: lsdi
+ * Return: always returns 1.
+ */
+int hsh_cd(char **argv, char **envp)
+{
+	const char *new_dir;
+	int dir_change = -1;
+	int env_change;
+	size_t ac = count_args(argv);
+
+	(void)envp;
+	if (ac == 1)
+	{
+		printf("%s\n", argv[0]);
+		new_dir = (const char *)getenv("HOME");
+		dir_change = chdir(new_dir);
+	}
+	else if (ac == 2)
+	{
+		printf("%s %s\n", argv[0], argv[1]);
+		new_dir = (const char *)argv[1];
+		new_dir = (const char *)getenv(new_dir);
+		dir_change = chdir(new_dir);
+	}
+	else
+	{
+		printf("%s\n", argv[0]);
+		perror("hsh: improper number of arguments.");
+	}
+	/* this might cause issues. perror for ac > 2 will success? */
+	if (dir_change < 0)
+	{
+		perror("hsh:");
+		return (1);
+	}
+	env_change = setenv("PWD", new_dir, 1);
+	if (env_change < 0)
+		perror("hsh:");
+
+	return (1);
+}
+
+
+/**
+ * is_exit - checks if cmd is of form 'exit n'
+ * @argv: list of commands.
+ * Return: -1 if invalid exit command. exit stat else.
+ */
+int is_exit(char **argv)
+{
+	int exit_stat, failure = EXIT_FAILURE;
+	int good_bad = -10;
+	size_t ac;
+	const char *ex = "exit";
+	char *msg = "Usage: exit n ; 0 <= n <= 255";
+
+	ac = count_args(argv);
+	if ((ac < 1) || (ac > 2))
+	{
+		perror(msg);
+		return (failure);
+	}
+	if (ac == 1)
+	{
+		if (strcmp((const char *)argv[0], ex) == 0)
+			return (EXIT_SUCCESS);
+		return (failure);
+	}
+	if (ac == 2)
+	{
+		if (strcmp((const char *)argv[0], ex) == 0)
+		{
+			exit_stat = convert_to_int(argv[1]);
+			if (exit_stat < 0)
+			{
+				perror(msg);
+				return (good_bad);
+			}
+			return (exit_stat);
+		}
+		return (failure);
+	}
+
+	return (failure);
 }

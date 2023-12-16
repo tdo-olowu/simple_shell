@@ -40,7 +40,7 @@ struct node
 struct bins
 {
 	char *name;
-	int (*func)(char **);
+	int (*func)(char **, char **);
 };
 
 
@@ -50,6 +50,8 @@ void file_mode(int, char **, char **);
 
 /* input-output */
 ssize_t getcmd(char **, size_t *, FILE *);
+size_t count_args(char **);
+int convert_to_int(char *);
 
 /* text parsing and processing */
 char **make_tokens(char *, char *);
@@ -70,9 +72,11 @@ int file_exists(char *);
 int try_paths(void);
 
 /* builtins */
-int (*exec_bin(char **, char **))(char **);
-int hsh_exit(char **);
-int penv(char **);
+int (*exec_bin(char **, char **))(char **, char **);
+int hsh_exit(char **, char **);
+int penv(char **, char **);
+int hsh_cd(char **, char **);
+int is_exit(char **);
 
 /* memory management */
 void free_table(char **);

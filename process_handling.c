@@ -10,7 +10,7 @@
 int evaluate(char **argv, char **envp)
 {
 	int status = 1;
-	int (*exe)(char **);
+	int (*exe)(char **, char **);
 	char *path, *msg, **paths, *cmd;
 	dir_type *dir_head, *dir_node;
 
@@ -45,7 +45,7 @@ int evaluate(char **argv, char **envp)
 		free_table(paths);
 	}
 	else
-		status = exe(envp);
+		status = exe(argv, envp);
 
 	return (status);
 }
