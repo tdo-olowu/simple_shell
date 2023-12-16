@@ -10,8 +10,7 @@ void interactive_mode(char **environ)
 {
 	size_t cmdlen = 0;
 	ssize_t bytes_read = -1;
-	char *cmdline = NULL, **argv = NULL;
-	char **envp = envcopy(environ);
+	char *cmdline = NULL, **argv = NULL, **envp = envcopy(environ);
 	int eval = 1;
 
 	do {
@@ -32,10 +31,13 @@ void interactive_mode(char **environ)
 		else
 		{
 			argv = make_tokens(cmdline, " ");
+			if (argv == NULL)
+			{
+				continue;
+			}
 			eval = evaluate(argv, envp);
 			free_table(argv);
 		}
-		/* /free(cmdline);*/
 	} while (eval == 1);
 	free(cmdline);
 }

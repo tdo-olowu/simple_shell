@@ -3,6 +3,7 @@
 
 /**
  * free_table - frees a null-terminated array of strings
+ * check if *table is NULL
  * @table: an array of strings.
  * Return: none.
  */
