@@ -7,11 +7,11 @@
  * @envp: environment variables just in case.
  * Return: 1 for success, -1 for failure.
  */
-int (*exec_bin(char **argv, char **envp))(char**)
+int (*exec_bin(char **argv, char **envp))(char **)
 {
 	size_t i;
 	size_t range;
-	int (*function)(char**);
+	int (*function)(char **);
 	char *bin_name;
 	bin_type bin_map[] = {{"exit", hsh_exit},
 			      {"env", penv}};
