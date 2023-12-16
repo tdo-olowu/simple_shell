@@ -21,7 +21,7 @@ int evaluate(char **argv, char **envp)
 		if (*argv == NULL)
 			return (1);
 		cmd = argv[0];
-		if (is_a_dir(cmd))
+		if (file_exists(cmd))
 			return (dummy_process(cmd, argv, envp));
 		paths = make_tokens(genv("PATH", envp), ":");
 		dir_node = build_dir_chain(paths);
