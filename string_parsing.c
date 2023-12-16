@@ -12,6 +12,7 @@ char **make_tokens(char *str, char *delim)
 	int i, buf = 64, bufsize = 64;
 	char *temp, **tokens;
 
+	printf("about to make tokens str is %s\n", str);
 	if (str == NULL)
 		return (NULL);
 	tokens = malloc(buf * sizeof(char **));
@@ -41,7 +42,7 @@ char **make_tokens(char *str, char *delim)
 		temp = strtok(NULL, delim);
 	}
 	tokens[i] = NULL;
-	puts("tokens: ");
+	printf("About to leave tokens. printing tokens...\n");
 	pargv(tokens);
 
 	return (tokens);
@@ -84,35 +85,53 @@ char **envcopy(char **environ)
 /**
  * genv - an implementation of getenv.
  * @name: the name of the value
- * @env: the environment.
+ * @environ: the environment.
  * Return: the value of the name
  * pls fix leading whitespace.
  */
-char *genv(char *name, char **env)
+char *genv(char *name, char **environ)
 {
 	int i;
 	char *n, *v, *temp;
+	char **env = envcopy(environ);
 
+	printf("in genv name is : %s\n", name);
 	if (env != NULL)
 	{
 		v = NULL;
+		printf("envcopy successful\n");
+		puts("\n\n");
 		for (i = 0 ; env[i] != NULL ; ++i)
 		{
 			temp = strdup(env[i]);
 			if (temp == NULL)
 				return (NULL);
+			printf("temp: %s\n", temp);
 			n = strtok(temp, "=");
+			printf("name: %s\n", n);
+			printf("diff btw name and n is %d\n", strcmp(name, n));
 			if (strcmp(name, n) == 0)
 			{
 				v = strtok(NULL, "=");
-				free(temp);
-				break;
+				printf("value: %s duplicating tempn", v);
+				temp = strdup(v);
+				if (temp == NULL)
+				{
+					free(env);
+					return (NULL);
+				}
+				printf("temp successfully copied: %s\n", temp);
+				free(env);
+				return (temp);
 			}
 			free(temp);
 		}
-		return (v);
+		free(env);
+		printf("in genv, v has no match\n");
+		return (NULL);
 	}
 
+	printf("in genv, couldn't resolve envp\n");
 	return (NULL);
 }
 

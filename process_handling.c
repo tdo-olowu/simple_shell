@@ -11,10 +11,9 @@ int evaluate(char **argv, char **envp)
 {
 	int status = 1;
 	int (*exe)(char **, char **);
-	char *path, *msg, **paths, *cmd;
+	char *path, *msg, **paths, *cmd, *gv;
 	dir_type *dir_head, *dir_node;
 
-	puts("About to evaluate...\n");
 	exe = exec_bin(argv, envp);
 	msg = "Couldn't resolve PATH";
 	if (exe == NULL)
@@ -24,7 +23,10 @@ int evaluate(char **argv, char **envp)
 		cmd = argv[0];
 		if (file_exists(cmd))
 			return (dummy_process(cmd, argv, envp));
-		paths = make_tokens(genv("PATH", envp), ":");
+		gv = genv("PATH", envp);
+		if (gv == NULL)
+			return (1);
+		paths = make_tokens(gv, ":");
 		dir_node = build_dir_chain(paths);
 		if (dir_node == NULL)
 		{
