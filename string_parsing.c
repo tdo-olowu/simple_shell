@@ -49,13 +49,11 @@ char **make_tokens(char *str, char *delim)
 
 /**
  * envcopy - summons and copies over the ENV variable somehow.
- * the issue is that I'm not allowed to use extern
- * then how tf am I supposed to access environ?!
+ * @environ: the environment variable.
  * Return: a copy of environ.
  */
-char **envcopy(void)
+char **envcopy(char **environ)
 {
-	extern char **environ;
 	int i = 0;
 	int buf = 64;
 	char **envp = environ;
@@ -83,14 +81,15 @@ char **envcopy(void)
 /**
  * genv - an implementation of getenv.
  * @name: the name of the value
+ * @environ: the environment.
  * Return: the value of the name
  * pls fix leading whitespace.
  */
-char *genv(char *name)
+char *genv(char *name, char **environ)
 {
 	int i;
 	char *n, *v;
-	char **env = envcopy();
+	char **env = envcopy(environ);
 
 	if (env != NULL)
 	{

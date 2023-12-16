@@ -10,7 +10,7 @@
 int evaluate(char **argv, char **envp)
 {
 	int status = 1;
-	int (*exe)(void);
+	int (*exe)(char **);
 	char *path, *msg, **paths, *cmd = argv[0];
 	dir_type *dir_head, *dir_node;
 
@@ -20,7 +20,7 @@ int evaluate(char **argv, char **envp)
 	{
 		if (is_a_dir(cmd))
 			return (dummy_process(cmd, argv, envp));
-		paths = make_tokens(genv("PATH"), ":");
+		paths = make_tokens(genv("PATH", envp), ":");
 		dir_node = build_dir_chain(paths);
 		if (dir_node == NULL)
 		{
@@ -42,7 +42,7 @@ int evaluate(char **argv, char **envp)
 		free_table(paths);
 	}
 	else
-		status = exe();
+		status = exe(envp);
 
 	return (status);
 }

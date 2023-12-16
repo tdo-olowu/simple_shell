@@ -11,12 +11,8 @@
  */
 int main(int ac, char **av, char **env)
 {
-	int i;
-
-	for (i = 0 ; env[i] != NULL ; ++i)
-		printf("%s\n", env[i]);
 	if (isatty(STDIN_FILENO))
-		interactive_mode();
+		interactive_mode(env);
 	else
 		file_mode(ac, av, env);
 

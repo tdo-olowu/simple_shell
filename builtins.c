@@ -7,11 +7,11 @@
  * @envp: environment variables just in case.
  * Return: 1 for success, -1 for failure.
  */
-int (*exec_bin(char **argv, char **envp))(void)
+int (*exec_bin(char **argv, char **envp))(char**)
 {
 	size_t i;
 	size_t range;
-	int (*function)(void);
+	int (*function)(char**);
 	char *bin_name;
 	bin_type bin_map[] = {{"exit", hsh_exit},
 			      {"env", penv}};
@@ -35,22 +35,25 @@ int (*exec_bin(char **argv, char **envp))(void)
 
 /**
  * hsh_exit - exits the hshell.
+ * @argv: what do you need this for?
  * Return: value to break control of loop.
  */
-int hsh_exit(void)
+int hsh_exit(char **argv)
 {
+	(void)argv;
 	return (-1);
 }
 
 
 /**
  * penv - prints environment variables.
+ * @envp: list of environment variables.
  * Return: always returns 1. sho
  */
-int penv(void)
+int penv(char **envp)
 {
 	int i;
-	char **env = envcopy();
+	char **env = envcopy(envp);
 
 	if (env != NULL)
 	{

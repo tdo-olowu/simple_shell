@@ -3,14 +3,15 @@
 
 /**
  * interactive_mode - REPL
+ * @environ: the environment variable
  * Return: nothing, but will exit SUCCESS once done.
  */
-void interactive_mode(void)
+void interactive_mode(char **environ)
 {
 	size_t cmdlen = 0;
 	ssize_t bytes_read = -1;
 	char *cmdline = NULL, **argv = NULL;
-	char **envp = envcopy();
+	char **envp = envcopy(environ);
 	int eval = 1;
 
 	do {
