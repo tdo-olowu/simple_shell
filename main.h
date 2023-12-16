@@ -48,6 +48,7 @@ struct bins
 /* modes */
 void interactive_mode(char **);
 void file_mode(int, char **, char **);
+void read_from_file(int, char **, char **, FILE *);
 
 /* input-output */
 ssize_t getcmd(char **, size_t *, FILE *);

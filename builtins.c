@@ -78,6 +78,7 @@ int hsh_cd(char **argv, char **envp)
 	int dir_change = -1;
 	int env_change;
 	size_t ac = count_args(argv);
+	struct stat filetest;
 
 	(void)envp;
 	if (ac == 1)
@@ -93,7 +94,10 @@ int hsh_cd(char **argv, char **envp)
 	else if (ac == 2)
 	{
 		new_dir = (const char *)argv[1];
-		dir_change = chdir(new_dir);
+		if ((stat(new_dir, &filetest) == 0) && S_ISDIR(filetest.st_mode))
+			dir_change = chdir(new_dir);
+		else
+			return (1);
 	}
 	else
 	{
