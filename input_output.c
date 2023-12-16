@@ -51,18 +51,24 @@ size_t count_args(char **argv)
 /**
  * convert_to_int - convert a string to integer
  * this is specifically for is_exit to use.
+ * use strtol
  * @n: integer as string
  * Return: -1 if n is not proper integer.
  */
-int convert_to_int(char *n)
+long int convert_to_int(char *n)
 {
-	int value, modulus = 256;
+	long int value, modulus = 256, failure = -1;
 	const char *str = (const char *)n;
+	char *endp;
 
-	value = itoa(str);
-	/* this is if input is actually valid integer */
-	value = abs(value % modulus);
-	/* should input be improper, return -1 */
+	value = strtol(str, &endp, 10);
+	if (*endp != '\0')
+	{
+		perror("Couldn't parse argument to 'exit'");
+		return (failure);
+	}
+	value = value % modulus;
+	value = ((value < 0) ? (-1 * value) : value);
 
 	return (value);
 }

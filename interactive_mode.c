@@ -10,8 +10,8 @@ void interactive_mode(char **env)
 {
 	size_t cmdlen = 0;
 	ssize_t bytes_read = -1;
-	char *cmdline = NULL, **argv = NULL; **ev = envcopy(env);
-	int eval = 1, exit_stat = EXIT_SUCEESS;
+	char *cmdline = NULL, **argv = NULL, **ev = envcopy(env);
+	int eval = 1, exit_stat = 0;
 
 	do {
 		printf("($) ");
@@ -38,6 +38,7 @@ void interactive_mode(char **env)
 			if (exit_stat == -10)
 			{
 				free_table(argv);
+				eval = 1;
 				continue;
 			}
 			eval = evaluate(argv, ev);

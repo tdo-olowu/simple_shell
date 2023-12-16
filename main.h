@@ -51,7 +51,7 @@ void file_mode(int, char **, char **);
 /* input-output */
 ssize_t getcmd(char **, size_t *, FILE *);
 size_t count_args(char **);
-int convert_to_int(char *);
+long int convert_to_int(char *);
 
 /* text parsing and processing */
 char **make_tokens(char *, char *);

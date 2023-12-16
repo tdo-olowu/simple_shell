@@ -112,12 +112,14 @@ int hsh_cd(char **argv, char **envp)
 
 /**
  * is_exit - checks if cmd is of form 'exit n'
+ * if you're getting narrowing conv, its ret exitstat
  * @argv: list of commands.
  * Return: -1 if invalid exit command. exit stat else.
  */
 int is_exit(char **argv)
 {
-	int exit_stat, failure = EXIT_FAILURE;
+	int failure = -1, success = 0;
+	long int exit_stat;
 	int good_bad = -10;
 	size_t ac;
 	const char *ex = "exit";
@@ -127,12 +129,14 @@ int is_exit(char **argv)
 	if ((ac < 1) || (ac > 2))
 	{
 		perror(msg);
+		if ((ac != 0) && (strcmp((const char *)argv[0], ex) == 0))
+			return (good_bad);
 		return (failure);
 	}
 	if (ac == 1)
 	{
 		if (strcmp((const char *)argv[0], ex) == 0)
-			return (EXIT_SUCCESS);
+			return (success);
 		return (failure);
 	}
 	if (ac == 2)
@@ -145,7 +149,7 @@ int is_exit(char **argv)
 				perror(msg);
 				return (good_bad);
 			}
-			return (exit_stat);
+			return ((int)exit_stat);
 		}
 		return (failure);
 	}
