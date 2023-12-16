@@ -63,7 +63,7 @@ char *genv(char *, char **);
 int is_all_blank(char *);
 
 /* path handling */
-int is_a_dir(char *);
+int is_a_dir(const char *);
 dir_type *append_dir_node(dir_type **, char *);
 dir_type *append_node(dir_type **, char *);
 dir_type *build_dir_chain(char **);

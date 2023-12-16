@@ -68,6 +68,8 @@ int penv(char **argv, char **envp)
 
 /**
  * hsh_cd - changes the current directory.
+ * if right no of args check if arg is file or dir.
+ * if arg is dir and exists, do cd. else perror.
  * @argv: list of arguments.
  * @envp: lsdi
  * Return: always returns 1.
@@ -75,10 +77,8 @@ int penv(char **argv, char **envp)
 int hsh_cd(char **argv, char **envp)
 {
 	const char *new_dir;
-	int dir_change = -1;
-	int env_change;
+	int dir_change = -1, env_change;
 	size_t ac = count_args(argv);
-	struct stat filetest;
 
 	(void)envp;
 	if (ac == 1)
@@ -94,10 +94,13 @@ int hsh_cd(char **argv, char **envp)
 	else if (ac == 2)
 	{
 		new_dir = (const char *)argv[1];
-		if ((stat(new_dir, &filetest) == 0) && S_ISDIR(filetest.st_mode))
+		if (is_a_dir(new_dir))
 			dir_change = chdir(new_dir);
 		else
+		{
+			perror("hsh");
 			return (1);
+		}
 	}
 	else
 	{
@@ -130,13 +133,15 @@ int is_exit(char **argv)
 	int good_bad = -10;
 	size_t ac;
 	const char *ex = "exit";
-	char *msg = "Usage: exit n ; 0 <= n <= 255";
+	char *msg = "hsh: Illegal number: %s\n";
+
+	/* char *msg2 = "hsh: Illegal number: %d\n"; */
 
 	ac = count_args(argv);
 	if ((ac < 1) || (ac > 2))
 	{
 		if ((ac > 2) && (strcmp((const char *)argv[0], ex) == 0))
-			perror(msg);
+			fprintf(stderr, msg, argv[1]);
 		if ((ac != 0) && (strcmp((const char *)argv[0], ex) == 0))
 			return (good_bad);
 		return (failure);
@@ -154,7 +159,7 @@ int is_exit(char **argv)
 			exit_stat = convert_to_int(argv[1]);
 			if (exit_stat < 0)
 			{
-				perror(msg);
+				fprintf(stderr, msg, argv[1]);
 				return (good_bad);
 			}
 			return ((int)exit_stat);

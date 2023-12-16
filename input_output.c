@@ -65,18 +65,14 @@ size_t count_args(char **argv)
  */
 long int convert_to_int(char *n)
 {
-	long int value, modulus = 256, failure = -1;
+	long int value, failure = -1, modulus = 256;
 	const char *str = (const char *)n;
 	char *endp;
 
+	(void)modulus;
 	value = strtol(str, &endp, 10);
 	if (*endp != '\0')
-	{
-		perror("Couldn't parse argument to 'exit'");
 		return (failure);
-	}
-	value = value % modulus;
-	value = ((value < 0) ? (-1 * value) : value);
 
 	return (value);
 }

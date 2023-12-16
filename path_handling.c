@@ -6,12 +6,15 @@
  * @cmd: given command.
  * Return: 1 means yes, 0 means no.
  */
-int is_a_dir(char *cmd)
+int is_a_dir(const char *cmd)
 {
+	struct stat status;
+
 	if (cmd == NULL)
 		return (0);
-	if (cmd[0] == '/')
+	if ((stat(cmd, &status) == 0) && (S_ISDIR(status.st_mode)))
 		return (1);
+
 	return (0);
 }
 
