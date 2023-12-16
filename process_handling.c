@@ -14,6 +14,7 @@ int evaluate(char **argv, char **envp)
 	char *path, *msg, **paths, *cmd;
 	dir_type *dir_head, *dir_node;
 
+	puts("About to evaluate...\n");
 	exe = exec_bin(argv, envp);
 	msg = "Couldn't resolve PATH";
 	if (exe == NULL)

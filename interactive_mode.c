@@ -23,20 +23,28 @@ void interactive_mode(char **env)
 			perror("Couldn't read input for some reason. Try again");
 		}
 		else if (bytes_read == 0)
+		{
 			eval = 1;
+			continue;
+		}
 		else
 		{
 			argv = make_tokens(cmdline, " ");
 			if (argv == NULL)
+			{
+				eval = 1;
 				continue;
+			}
 			exit_stat = is_exit(argv);
 			if (exit_stat >= 0)
 			{
+				printf("exit_stat: %d\n", exit_stat);
 				free_table(argv);
 				break;
 			}
 			if (exit_stat == -10)
 			{
+				printf("exit_stat: %d\n", exit_stat);
 				free_table(argv);
 				eval = 1;
 				continue;

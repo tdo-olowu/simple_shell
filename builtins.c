@@ -16,10 +16,14 @@ int (*exec_bin(char **argv, char **envp))(char **, char **)
 	bin_type bin_map[] = {{"env", penv},
 			      {"cd", hsh_cd}};
 
+	puts("in exec bin\n");
 	if (argv == NULL)
 		return (NULL);
 	if (*argv == NULL)
+	{
+		puts("null argv\n");
 		return (NULL);
+	}
 	/* envp isn't useful for now */
 	(void)envp;
 	range = sizeof(bin_map) / sizeof(bin_type);
@@ -32,6 +36,8 @@ int (*exec_bin(char **argv, char **envp))(char **, char **)
 			return (function);
 		}
 	}
+	puts("leaving exec bin");
+	printf("cmd is %s\n", argv[0]);
 
 	return (NULL);
 }

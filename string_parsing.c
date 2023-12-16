@@ -41,6 +41,8 @@ char **make_tokens(char *str, char *delim)
 		temp = strtok(NULL, delim);
 	}
 	tokens[i] = NULL;
+	puts("tokens: ");
+	pargv(tokens);
 
 	return (tokens);
 }
