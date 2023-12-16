@@ -93,7 +93,6 @@ int hsh_cd(char **argv, char **envp)
 	else if (ac == 2)
 	{
 		new_dir = (const char *)argv[1];
-	 	/* new_dir = (const char *)getenv(new_dir); */
 		dir_change = chdir(new_dir);
 	}
 	else
@@ -132,7 +131,7 @@ int is_exit(char **argv)
 	ac = count_args(argv);
 	if ((ac < 1) || (ac > 2))
 	{
-		if (ac > 2)
+		if ((ac > 2) && (strcmp((const char *)argv[0], ex) == 0))
 			perror(msg);
 		if ((ac != 0) && (strcmp((const char *)argv[0], ex) == 0))
 			return (good_bad);
