@@ -16,6 +16,10 @@ int (*exec_bin(char **argv, char **envp))(char **)
 	bin_type bin_map[] = {{"exit", hsh_exit},
 			      {"env", penv}};
 
+	if (argv == NULL)
+		return (NULL);
+	if (*argv == NULL)
+		return (NULL);
 	/* envp isn't useful for now */
 	(void)envp;
 	range = sizeof(bin_map) / sizeof(bin_type);

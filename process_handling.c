@@ -11,13 +11,16 @@ int evaluate(char **argv, char **envp)
 {
 	int status = 1;
 	int (*exe)(char **);
-	char *path, *msg, **paths, *cmd = argv[0];
+	char *path, *msg, **paths, *cmd;
 	dir_type *dir_head, *dir_node;
 
 	exe = exec_bin(argv, envp);
 	msg = "Couldn't resolve PATH";
 	if (exe == NULL)
 	{
+		if (*argv == NULL)
+			return (1);
+		cmd = argv[0];
 		if (is_a_dir(cmd))
 			return (dummy_process(cmd, argv, envp));
 		paths = make_tokens(genv("PATH", envp), ":");

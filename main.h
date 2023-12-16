@@ -21,7 +21,8 @@ typedef struct bins bin_type;
  *
  * Description: singly-linked list for PATH
  */
-struct node {
+struct node
+{
 	char *dir;
 	dir_type *next;
 };
@@ -36,51 +37,52 @@ struct node {
  * depends on if I don't die of overwork.
  * only exec_bin will be affected.
  */
-struct bins {
+struct bins
+{
 	char *name;
-	int (*func)(char**);
+	int (*func)(char **);
 };
 
 
 /* modes */
-void interactive_mode(char**);
-void file_mode(int, char**, char**);
+void interactive_mode(char **);
+void file_mode(int, char **, char **);
 
 /* input-output */
-ssize_t getcmd(char**, size_t*, FILE*);
+ssize_t getcmd(char **, size_t *, FILE *);
 
 /* text parsing and processing */
-char **make_tokens(char*, char*);
-char **envcopy(char**);
-char *cmd_as_dir(char*, char*);
-char *genv(char*, char**);
+char **make_tokens(char *, char *);
+char **envcopy(char **);
+char *cmd_as_dir(char *, char *);
+char *genv(char *, char **);
 
 /* path handling */
-int is_a_dir(char*);
-dir_type *append_dir_node(dir_type**, char*);
-dir_type *append_node(dir_type**, char*);
-dir_type *build_dir_chain(char**);
+int is_a_dir(char *);
+dir_type *append_dir_node(dir_type **, char *);
+dir_type *append_node(dir_type **, char *);
+dir_type *build_dir_chain(char **);
 
 /* process_handling */
-int evaluate(char**, char**);
-int dummy_process(char*, char**, char**);
-int file_exists(char*);
+int evaluate(char **, char **);
+int dummy_process(char *, char **, char **);
+int file_exists(char *);
 int try_paths(void);
 
 /* builtins */
-int (*exec_bin(char**, char**))(char**);
-int hsh_exit(char**);
-int penv(char**);
+int (*exec_bin(char **, char **))(char **);
+int hsh_exit(char **);
+int penv(char **);
 
 /* memory management */
-void free_table(char**);
-void cleanup(char*, char**);
-void free_list(dir_type*);
+void free_table(char **);
+void cleanup(char *, char **);
+void free_list(dir_type *);
 
 /* testing and debugging functions */
-void dump(char*, char*);
-int panic(char*, char*, char**, int);
-void pargv(char**);
+void dump(char *, char *);
+int panic(char *, char *, char **, int);
+void pargv(char **);
 
 
 
