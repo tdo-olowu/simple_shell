@@ -19,22 +19,17 @@ void interactive_mode(char **env)
 		if (bytes_read < 0)
 		{
 			if (feof(stdin))
+			{
+				exit_stat = 0;
 				break;
+			}
 			perror("Couldn't read input for some reason. Try again");
-		}
-		else if (bytes_read == 0)
-		{
-			eval = 1;
-			continue;
 		}
 		else
 		{
 			argv = make_tokens(cmdline, " ");
 			if (argv == NULL)
-			{
-				eval = 1;
 				continue;
-			}
 			exit_stat = is_exit(argv);
 			if (exit_stat >= 0)
 			{
@@ -51,7 +46,6 @@ void interactive_mode(char **env)
 			free_table(argv);
 		}
 	} while (eval == 1);
-	free(cmdline);
-	free_table(ev);
+	cleanup(cmdline, ev);
 	exit(exit_stat);
 }

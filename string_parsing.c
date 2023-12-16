@@ -2,6 +2,28 @@
 
 
 /**
+ * is_all_blank - check if a buffer coof
+ * @buffer: the buff to check.
+ * Return: 0 if one non-blank found or buff is null.
+ */
+int is_all_blank(char *buffer)
+{
+	int i;
+	char blank = ' ';
+
+	if (buffer == NULL)
+		return (0);
+	for (i = 0 ; buffer[i] != '\0' ; ++i)
+	{
+		if (buffer[i] != blank)
+			return (0);
+	}
+
+	return (1);
+}
+
+
+/**
  * make_tokens - tokenise a null-terminated string.
  * @str: the string to tokenise
  * @delim: the delimiter.
@@ -12,7 +34,6 @@ char **make_tokens(char *str, char *delim)
 	int i, buf = 64, bufsize = 64;
 	char *temp, **tokens;
 
-	printf("about to make tokens str is %s\n", str);
 	if (str == NULL)
 		return (NULL);
 	tokens = malloc(buf * sizeof(char **));
@@ -42,8 +63,6 @@ char **make_tokens(char *str, char *delim)
 		temp = strtok(NULL, delim);
 	}
 	tokens[i] = NULL;
-	printf("About to leave tokens. printing tokens...\n");
-	pargv(tokens);
 
 	return (tokens);
 }
@@ -95,43 +114,33 @@ char *genv(char *name, char **environ)
 	char *n, *v, *temp;
 	char **env = envcopy(environ);
 
-	printf("in genv name is : %s\n", name);
 	if (env != NULL)
 	{
 		v = NULL;
-		printf("envcopy successful\n");
-		puts("\n\n");
 		for (i = 0 ; env[i] != NULL ; ++i)
 		{
 			temp = strdup(env[i]);
 			if (temp == NULL)
 				return (NULL);
-			printf("temp: %s\n", temp);
 			n = strtok(temp, "=");
-			printf("name: %s\n", n);
-			printf("diff btw name and n is %d\n", strcmp(name, n));
 			if (strcmp(name, n) == 0)
 			{
 				v = strtok(NULL, "=");
-				printf("value: %s duplicating tempn", v);
 				temp = strdup(v);
 				if (temp == NULL)
 				{
 					free(env);
 					return (NULL);
 				}
-				printf("temp successfully copied: %s\n", temp);
 				free(env);
 				return (temp);
 			}
 			free(temp);
 		}
 		free(env);
-		printf("in genv, v has no match\n");
 		return (NULL);
 	}
 
-	printf("in genv, couldn't resolve envp\n");
 	return (NULL);
 }
 

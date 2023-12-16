@@ -24,8 +24,6 @@ int evaluate(char **argv, char **envp)
 		if (file_exists(cmd))
 			return (dummy_process(cmd, argv, envp));
 		gv = genv("PATH", envp);
-		if (gv == NULL)
-			return (1);
 		paths = make_tokens(gv, ":");
 		dir_node = build_dir_chain(paths);
 		if (dir_node == NULL)
@@ -44,12 +42,12 @@ int evaluate(char **argv, char **envp)
 				return (dummy_process(path, argv, envp));
 			dir_node = dir_node->next;
 		}
+		perror("hsh");
 		free_list(dir_head);
-		free_table(paths);
+		cleanup(gv, paths);
 	}
 	else
 		status = exe(argv, envp);
-
 	return (status);
 }
 

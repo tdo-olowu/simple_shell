@@ -16,12 +16,10 @@ int (*exec_bin(char **argv, char **envp))(char **, char **)
 	bin_type bin_map[] = {{"env", penv},
 			      {"cd", hsh_cd}};
 
-	puts("in exec bin\n");
 	if (argv == NULL)
 		return (NULL);
 	if (*argv == NULL)
 	{
-		puts("null argv\n");
 		return (NULL);
 	}
 	/* envp isn't useful for now */
@@ -36,8 +34,6 @@ int (*exec_bin(char **argv, char **envp))(char **, char **)
 			return (function);
 		}
 	}
-	puts("leaving exec bin");
-	printf("cmd is %s\n", argv[0]);
 
 	return (NULL);
 }
@@ -83,6 +79,7 @@ int hsh_cd(char **argv, char **envp)
 	int env_change;
 	size_t ac = count_args(argv);
 
+	puts("inside cd\n");
 	(void)envp;
 	if (ac == 1)
 	{
@@ -112,6 +109,7 @@ int hsh_cd(char **argv, char **envp)
 	if (env_change < 0)
 		perror("hsh:");
 
+	puts("leaving cd\n");
 	return (1);
 }
 
@@ -134,7 +132,8 @@ int is_exit(char **argv)
 	ac = count_args(argv);
 	if ((ac < 1) || (ac > 2))
 	{
-		perror(msg);
+		if (ac > 2)
+			perror(msg);
 		if ((ac != 0) && (strcmp((const char *)argv[0], ex) == 0))
 			return (good_bad);
 		return (failure);

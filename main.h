@@ -58,6 +58,7 @@ char **make_tokens(char *, char *);
 char **envcopy(char **);
 char *cmd_as_dir(char *, char *);
 char *genv(char *, char **);
+int is_all_blank(char *);
 
 /* path handling */
 int is_a_dir(char *);
