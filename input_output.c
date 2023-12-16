@@ -3,27 +3,30 @@
 /**
  * getcmd - used for reading user input or lines from file.
  * attempt at handling comments.
- * @bufferptr: pointer to the input buffer
+ * @buf: pointer to the input buffer
  * @lenptr: pointer to length of buffer
  * @filestr: filestream pointer.
  * Return: number of bytes read.
  */
-ssize_t getcmd(char **bufferptr, size_t *lenptr, FILE *filestr)
+ssize_t getcmd(char **buf, size_t *lenptr, FILE *filestr)
 {
 	int i;
+	char prev_ch = '/', ch;
 	ssize_t bytes_read;
 
-	bytes_read = getline(bufferptr, lenptr, filestr);
+	bytes_read = getline(buf, lenptr, filestr);
 	/* try this: buffer[bytes_read - 1] = '\0' to remove newline */
 	/* i also try to skip when char is comment. */
 	if (bytes_read >= 0)
 	{
-		for (i = 0 ; (*bufferptr)[i] != '\n' ; ++i)
+		for (i = 0 ; (*buf)[i] != '\n' ; ++i)
 		{
-			if ((*bufferptr)[i] == '#')
+			ch = (*buf)[i];
+			if ((!isalpha(prev_ch)) && (ch == '#'))
 				break;
+			prev_ch = ch;
 		}
-		(*bufferptr)[i] = '\0';
+		(*buf)[i] = '\0';
 		bytes_read -= 1;
 	}
 
