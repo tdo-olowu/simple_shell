@@ -19,10 +19,7 @@ int evaluate(char **argv, char **envp)
 	if (exe == NULL)
 	{
 		if (is_a_dir(cmd))
-		{
-			status = dummy_process(cmd, argv, envp);
-			return (status);
-		}
+			return (dummy_process(cmd, argv, envp));
 		paths = make_tokens(genv("PATH"), ":");
 		dir_node = build_dir_chain(paths);
 		if (dir_node == NULL)
@@ -31,7 +28,6 @@ int evaluate(char **argv, char **envp)
 			free_table(paths);
 			return (1);
 		}
-		/* save this. note - could implement free directly */
 		dir_head = dir_node;
 		while (dir_node != NULL)
 		{
@@ -39,10 +35,7 @@ int evaluate(char **argv, char **envp)
 			if (path == NULL)
 				return (panic(msg, NULL, paths, 1));
 			if (file_exists(path))
-			{
-				status = dummy_process(path, argv, envp);
-				break;
-			}
+				return (dummy_process(path, argv, envp));
 			dir_node = dir_node->next;
 		}
 		free_list(dir_head);
@@ -113,11 +106,3 @@ int file_exists(char *path)
 		return (1);
 	return (0);
 }
-
-
-/**
- * if (WIFEXITED(exe) && WEXITSTATUS(exe) == EXIT_SUCCESS)
- * 	child succeeded.
- * else
- * 	child failed to execute.
- */

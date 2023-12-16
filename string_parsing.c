@@ -14,7 +14,7 @@ char **make_tokens(char *str, char *delim)
 
 	if (str == NULL)
 		return (NULL);
-	tokens = malloc(buf * sizeof(char**));
+	tokens = malloc(buf * sizeof(char **));
 	if (tokens == NULL)
 		return (NULL);
 
@@ -24,7 +24,7 @@ char **make_tokens(char *str, char *delim)
 		if (i >= bufsize)
 		{
 			bufsize += buf;
-			tokens = realloc(tokens, bufsize * sizeof(char**));
+			tokens = realloc(tokens, bufsize * sizeof(char **));
 			if (tokens == NULL)
 			{
 				free_table(tokens);
@@ -58,9 +58,9 @@ char **envcopy(void)
 	extern char **environ;
 	int i = 0;
 	int buf = 64;
-	char **envp;
+	char **envp = environ;
 
-	envp = malloc(buf * sizeof(char**));
+	envp = malloc(buf * sizeof(char **));
 	if (envp == NULL)
 		return (NULL);
 	for (i = 0 ; environ[i] != NULL ; ++i)
@@ -83,14 +83,13 @@ char **envcopy(void)
 /**
  * genv - an implementation of getenv.
  * @name: the name of the value
- * @env: the environment variable.
  * Return: the value of the name
  * pls fix leading whitespace.
  */
 char *genv(char *name)
 {
 	int i;
-	char *n; char *v;
+	char *n, *v;
 	char **env = envcopy();
 
 	if (env != NULL)
@@ -117,7 +116,7 @@ char *genv(char *name)
  * later, we'll add another argument - a list of paths to try?
  * this function is a primitive version of try-paths.
  * @str: the suffix.
- * @pref: what to append to the str e.g. /bin/
+ * @prefix: what to append to the str e.g. /bin/
  * Return: pointer to char
  */
 char *cmd_as_dir(char *str, char *prefix)

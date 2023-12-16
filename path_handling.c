@@ -20,6 +20,7 @@ int is_a_dir(char *cmd)
  * append_dir_node - appends a node to head of dir_type
  * is this even useful anymore?
  * @head: address of head
+ * @path: blghbrhbr
  * Return: pointer to appended node
  */
 dir_type *append_dir_node(dir_type **head, char *path)
